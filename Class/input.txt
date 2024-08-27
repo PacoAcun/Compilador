@@ -1,0 +1,12 @@
+int b = 20;
+float c = 2.5;
+boolean flag = true;
+
+if (b > c) {
+    c = c * 2;
+    b = b - 1;
+} else {
+    flag = false;
+}
+
+return b;

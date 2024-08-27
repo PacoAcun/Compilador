@@ -1,6 +1,17 @@
 package codegen;
 
+import irt.Irt;
+
 // Clase Codegen
 public class Codegen {
-    // Implementación de la generación de código
+    private Irt irt;
+
+    public Codegen(Irt irt) {
+        this.irt = irt;
+    }
+
+    public void generateCode(String outputFileName) {
+        System.out.println("stage: generating code");
+        // Lógica para la generación de código.
+    }
 }

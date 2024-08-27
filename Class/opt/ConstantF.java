@@ -1,6 +1,8 @@
 package opt;
 
-// Clase ConstantF
 public class ConstantF {
-    // Implementación de la optimización de plegado de constantes
+    public static String processFloat(String value) {
+        
+        return value; 
+    }
 }
