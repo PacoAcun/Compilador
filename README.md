@@ -103,7 +103,7 @@ En este comando:
 
 - **`target scan`**: Ejecuta solo la fase de escaneo.
 - **`o output.txt`**: Guarda la salida en `output.txt`.
-
+```
 ## 5. Consideraciones Adicionales
 
 - **Errores de JFlex**: JFlex genera código fuente para el scanner pero no verifica su corrección. Asegúrate de que el archivo `.flex` esté libre de errores antes de compilar.
