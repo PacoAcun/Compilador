@@ -78,7 +78,7 @@ El scanner produce tokens utilizando la clase `Symbol` del parser CUP. Cada toke
     String processedValue = Algebraic.processInteger(yytext());
     return createSymbol(sym.INTLIT, processedValue);
 }
-
+```
 ## 4. Integración con el CLI
 
 ### 4.1. Archivo
