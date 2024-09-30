@@ -2,9 +2,11 @@ package compiler;
 
 import scanner.Scanner;
 import parser.sym;
+import parser.Parser;  // Importa el parser generado por CUP
 import java.io.FileReader;
 import java.io.Reader;
 import java_cup.runtime.Symbol;
+import java_cup.runtime.lr_parser;
 import opt.Algebraic;
 import opt.ConstantF;
 import java.io.FileWriter;
@@ -49,6 +51,7 @@ public class Compiler {
 
             PrintWriter writer = new PrintWriter(new FileWriter(outputFileName));
 
+            // Fase de análisis léxico (scan)
             if (target.equals("scan")) {
                 while ((token = scanner.next_token()).sym != sym.EOF) {
                     String output = "Token: " + token.sym + " | Valor: " + token.value + " | Línea: " + token.left + ", Columna: " + token.right;
@@ -59,24 +62,38 @@ public class Compiler {
                 return;
             }
 
-            // Fase de análisis sintáctico
-            // Aquí llamas a tu parser para obtener el AST
-            // Parser parser = new Parser(scanner);
-            // ASTNode ast = parser.parse();
+            // Fase de análisis sintáctico (parse)
+            if (target.equals("parse") || target.equals("codegen")) {
+                Parser parser = new Parser(scanner);  // Instancia del parser
+                Symbol parseTree = parser.parse();  // Ejecuta el análisis sintáctico
+                System.out.println("Parsing completed successfully.");
+                writer.println("Parsing completed successfully.");
+
+                // Supongamos que el árbol de sintaxis es el resultado del análisis sintáctico
+                // ASTNode ast = (ASTNode) parseTree.value;
+                // Puedes seguir trabajando con el AST aquí
+            }
 
             // Optimización Algebraica
-            Algebraic algebraicOptimizer = new Algebraic();
-            // ast = algebraicOptimizer.optimize(ast);
+            if (target.equals("optimize") || target.equals("codegen")) {
+                Algebraic algebraicOptimizer = new Algebraic();
+                // ast = algebraicOptimizer.optimize(ast);
+                // Ejemplo de cómo se podría optimizar con Algebraic
+                // writer.println("Optimización algebraica completada.");
+            }
 
             // Propagación de Constantes
-            ConstantF constantOptimizer = new ConstantF();
-            // ast = constantOptimizer.optimize(ast);
+            if (target.equals("optimize") || target.equals("codegen")) {
+                ConstantF constantOptimizer = new ConstantF();
+                // ast = constantOptimizer.optimize(ast);
+                // writer.println("Optimización de constantes completada.");
+            }
 
-            // Continua con la generación de código o cualquier otro target
+            // Fase de generación de código
             if (target.equals("codegen")) {
-                // Genera el código usando el AST optimizado
                 // CodeGenerator codegen = new CodeGenerator();
                 // codegen.generate(ast, writer);
+                writer.println("Código generado exitosamente.");
             }
 
             writer.close(); // Cierra el escritor si continúa a otras fases

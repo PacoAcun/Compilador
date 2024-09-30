@@ -1,0 +1,53 @@
+// Importaciones necesarias
+parser code {:
+  import java_cup.runtime.*;
+  import parser.sym;
+  import java.io.*;
+:};
+
+// Terminales de Decaf
+terminal int IDENTIFIER, INTLIT, FLOATLIT, LPAREN, RPAREN, LBRACE, RBRACE, SEMICOLON;
+terminal int PLUS, MINUS, IF, ELSE, RETURN, INT, FLOAT;
+
+// No terminales
+non terminal Program program;
+non terminal DeclList decl_list;
+non terminal Declaration declaration;
+non terminal Type type;
+non terminal StmtList stmt_list;
+non terminal Statement statement;
+non terminal Expression expression;
+
+// No terminal de inicio
+start with program;
+
+// Producción del no terminal Program (el símbolo de inicio)
+Program ::= decl_list {: System.out.println("Program parsed."); :};
+
+// Lista de declaraciones (DeclList)
+DeclList ::= declaration decl_list {: System.out.println("Declaration list parsed."); :}
+           | /* vacío */ {: System.out.println("Empty declaration list."); :};
+
+// Declaración de variables
+Declaration ::= type IDENTIFIER SEMICOLON {: System.out.println("Variable declared."); :};
+
+// Tipos de datos
+Type ::= INT {: System.out.println("Type int."); :}
+       | FLOAT {: System.out.println("Type float."); :};
+
+// Lista de sentencias (StmtList)
+StmtList ::= statement stmt_list {: System.out.println("Statement list parsed."); :}
+           | /* vacío */ {: System.out.println("Empty statement list."); :};
+
+// Definición de una sentencia
+Statement ::= expression SEMICOLON {: System.out.println("Expression statement."); :}
+            | IF LPAREN expression RPAREN LBRACE stmt_list RBRACE {: System.out.println("If statement parsed."); :}
+            | IF LPAREN expression RPAREN LBRACE stmt_list RBRACE ELSE LBRACE stmt_list RBRACE {: System.out.println("If-Else statement parsed."); :}
+            | RETURN expression SEMICOLON {: System.out.println("Return statement parsed."); :};
+
+// Definición de expresiones
+Expression ::= expression PLUS expression {: System.out.println("Addition expression."); :}
+             | expression MINUS expression {: System.out.println("Subtraction expression."); :}
+             | INTLIT {: System.out.println("Integer literal parsed."); :}
+             | FLOATLIT {: System.out.println("Float literal parsed."); :}
+             | IDENTIFIER {: System.out.println("Identifier parsed."); :};
