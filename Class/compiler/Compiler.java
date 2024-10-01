@@ -15,6 +15,9 @@ import java.io.PrintWriter;
 public class Compiler {
     public static void main(String[] args) {
         System.out.println("Compiler started...");
+        System.out.println("Target: " + target);
+        System.out.println("Input file: " + inputFileName);
+
 
         if (args.length == 0 || args[0].equals("-h")) {
             printHelp();
@@ -64,15 +67,13 @@ public class Compiler {
 
             // Fase de análisis sintáctico (parse)
             if (target.equals("parse") || target.equals("codegen")) {
+                System.out.println("Starting parser...");
                 Parser parser = new Parser(scanner);  // Instancia del parser
                 Symbol parseTree = parser.parse();  // Ejecuta el análisis sintáctico
                 System.out.println("Parsing completed successfully.");
                 writer.println("Parsing completed successfully.");
-
-                // Supongamos que el árbol de sintaxis es el resultado del análisis sintáctico
-                // ASTNode ast = (ASTNode) parseTree.value;
-                // Puedes seguir trabajando con el AST aquí
             }
+
 
             // Optimización Algebraica
             if (target.equals("optimize") || target.equals("codegen")) {

@@ -97,7 +97,7 @@ El CLI permite ejecutar diferentes etapas del compilador mediante las siguientes
 ### 4.3. Ejemplo de Ejecución del CLI
 
 ```bash
-java compiler -target scan -o output.txt input.txt
+java -cp "bin;lib/java-cup-11b.jar" compiler.Compiler -target scan -o output.txt input.txt
 ```
 En este comando:
 

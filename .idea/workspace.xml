@@ -5,13 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09e7d7bb-0c39-4db4-8f1f-606b82907696" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Class/bin/ast/Ast.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/codegen/Codegen.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/compiler/Compiler.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/irt/Irt.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/opt/Algebraic.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/opt/ConstantF.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/parser/Parser.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/parser/sym.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/scanner/Scanner$ErrorMsg.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/scanner/Scanner.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/bin/semantic/Semantic.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/lib/java-cup-11b-runtime.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/lib/java-cup-11b.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/lib/jflex-full-1.9.1.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/ast/Ast.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/ast/Ast.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/codegen/Codegen.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/codegen/Codegen.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/Compiler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Class/compiler/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/Compiler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Class/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Class/input.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/irt/Irt.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/irt/Irt.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/opt/Algebraic.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/opt/Algebraic.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/opt/ConstantF.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/opt/ConstantF.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Class/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Class/output.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/parser/Parser.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/parser/Parser.cup" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/Parser.cup" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Class/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/parser/sym.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Class/parser/sym.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/sym.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner$ErrorMsg.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/scanner/Scanner$ErrorMsg.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/scanner/Scanner.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner.flex" beforeDir="false" afterPath="$PROJECT_DIR$/Class/scanner/Scanner.flex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/scanner/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/semantic/Semantic.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/semantic/Semantic.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -29,25 +54,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "Master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Paco/Documents/Github/Compilador",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
       </set>
     </attachedChunks>
   </component>
@@ -62,6 +88,7 @@
       <workItem from="1727207616908" duration="1045000" />
       <workItem from="1727568737962" duration="599000" />
       <workItem from="1727671684821" duration="114000" />
+      <workItem from="1727790372203" duration="141000" />
     </task>
     <servers />
   </component>

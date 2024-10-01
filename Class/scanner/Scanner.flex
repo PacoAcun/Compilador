@@ -8,122 +8,88 @@ import opt.Algebraic;
 import opt.ConstantF;
 
 %%
+
 %public
 %class Scanner
-%unicode
 %cup
+%unicode
 %line
 %column
 
 %{
-    // Variables para seguimiento de línea y columna
-    private int line = 1;
-    private int column = 1;
+private int line = 1; // Para llevar la cuenta de las líneas
 
-    // Método para actualizar la posición
-    private void updatePosition(String text) {
-        for (char c : text.toCharArray()) {
-            if (c == '\n') {
-                line++;
-                column = 1;
-            } else {
-                column++;
-            }
-        }
-    }
-
-    // Métodos para obtener la línea y columna actual
-    public int yyline() {
-        return line;
-    }
-
-    public int yycolumn() {
-        return column;
-    }
-
-    // Método para crear un símbolo con valor
-    private Symbol createSymbol(int type, String value) {
-        return new Symbol(type, yyline(), yycolumn(), value);
-    }
-
-    // Clase para manejar errores
-    public class ErrorMsg {
-        public static void printError(String message, int line, int column) {
-            System.err.println("Error en la línea " + line + ", columna " + column + ": " + message);
-        }
-    }
+// Método para verificar si el identificador es conocido
+private boolean isKnownIdentifier(String id) {
+    // Puedes añadir aquí lógica para verificar si el identificador es conocido
+    // Por ejemplo, revisa si es una palabra reservada o un identificador predefinido
+    return id.matches("if|else|while|return|int|void|boolean|true|false"); // Ejemplo de palabras clave
+}
 %}
 
 %%
 
-// Whitespace (ignoring)
-\s+ { updatePosition(yytext()); /* ignore whitespace */ }
+// Ignorar espacios en blanco y saltos de línea
+[ \t\r]+        { /* Ignorar espacios en blanco */ }
+\n              { line++; }
 
-// Reserved keywords
-"if" { updatePosition(yytext()); return createSymbol(sym.IF, "if"); }
-"else" { updatePosition(yytext()); return createSymbol(sym.ELSE, "else"); }
-"while" { updatePosition(yytext()); return createSymbol(sym.WHILE, "while"); }
-"for" { updatePosition(yytext()); return createSymbol(sym.FOR, "for"); }
-"int" { updatePosition(yytext()); return createSymbol(sym.INT, "int"); }
-"float" { updatePosition(yytext()); return createSymbol(sym.FLOAT, "float"); }
-"boolean" { updatePosition(yytext()); return createSymbol(sym.BOOLEAN, "boolean"); }
-"true" { updatePosition(yytext()); return createSymbol(sym.TRUE, "true"); }
-"false" { updatePosition(yytext()); return createSymbol(sym.FALSE, "false"); }
-"public" { updatePosition(yytext()); return createSymbol(sym.PUBLIC, "public"); }
-"private" { updatePosition(yytext()); return createSymbol(sym.PRIVATE, "private"); }
-"protected" { updatePosition(yytext()); return createSymbol(sym.PROTECTED, "protected"); }
-"void" { updatePosition(yytext()); return createSymbol(sym.VOID, "void"); }
-"return" { updatePosition(yytext()); return createSymbol(sym.RETURN, "return"); }
+// Comentarios de una línea
+"//".*          { /* Ignorar comentarios de una línea */ }
 
-// Operators and Delimiters
-"=" { updatePosition(yytext()); return createSymbol(sym.EQUALS, "="); }
-"==" { updatePosition(yytext()); return createSymbol(sym.EQUALS_EQUALS, "=="); }
-"!=" { updatePosition(yytext()); return createSymbol(sym.NOT_EQUALS, "!="); }
-"<" { updatePosition(yytext()); return createSymbol(sym.LESS_THAN, "<"); }
-"<=" { updatePosition(yytext()); return createSymbol(sym.LESS_THAN_EQUALS, "<="); }
-">" { updatePosition(yytext()); return createSymbol(sym.GREATER_THAN, ">"); }
-">=" { updatePosition(yytext()); return createSymbol(sym.GREATER_THAN_EQUALS, ">="); }
-"(" { updatePosition(yytext()); return createSymbol(sym.LPAREN, "("); }
-")" { updatePosition(yytext()); return createSymbol(sym.RPAREN, ")"); }
-"{" { updatePosition(yytext()); return createSymbol(sym.LBRACE, "{"); }
-"}" { updatePosition(yytext()); return createSymbol(sym.RBRACE, "}"); }
-";" { updatePosition(yytext()); return createSymbol(sym.SEMICOLON, ";"); }
-"," { updatePosition(yytext()); return createSymbol(sym.COMMA, ","); }
-"[" { updatePosition(yytext()); return createSymbol(sym.LBRACKET, "["); }
-"]" { updatePosition(yytext()); return createSymbol(sym.RBRACKET, "]"); }
-"+" { updatePosition(yytext()); return createSymbol(sym.PLUS, "+"); }
-"-" { updatePosition(yytext()); return createSymbol(sym.MINUS, "-"); }
-"*" { updatePosition(yytext()); return createSymbol(sym.MULTIPLY, "*"); }
-"/" { updatePosition(yytext()); return createSymbol(sym.DIVIDE, "/"); }
+// Comentarios multilínea
+"/*"([^*]|(\*+[^/]))*"*/" { /* Ignorar comentarios multilínea */ }
 
-// Literals
-[0-9]+ { 
-    updatePosition(yytext()); 
-    // Usando Algebraic para procesar el entero si es necesario
-    String processedValue = Algebraic.processInteger(yytext());
-    return createSymbol(sym.INTLIT, processedValue); 
-}
-[0-9]*"."[0-9]+ { 
-    updatePosition(yytext()); 
-    // Usando ConstantF para procesar el flotante si es necesario
-    String processedValue = ConstantF.processFloat(yytext());
-    return createSymbol(sym.FLOATLIT, processedValue); 
+// Palabras clave
+"if"            { return new Symbol(sym.IF); }
+"else"          { return new Symbol(sym.ELSE); }
+"while"         { return new Symbol(sym.WHILE); }
+"return"        { return new Symbol(sym.RETURN); }
+"int"           { return new Symbol(sym.INT); }
+"void"          { return new Symbol(sym.VOID); }
+"boolean"       { return new Symbol(sym.BOOLEAN); }
+"true"          { return new Symbol(sym.TRUE); }
+"false"         { return new Symbol(sym.FALSE); }
+
+// Identificadores
+[a-zA-Z_][a-zA-Z0-9_]*  { 
+    if (isKnownIdentifier(yytext())) {
+        return new Symbol(sym.ID, yytext()); 
+    } else {
+        System.err.println("Error de sintaxis en la línea " + line + ": identificador inválido '" + yytext() + "'"); 
+        return new Symbol(sym.error); // Puedes manejar esto como prefieras
+    }
 }
 
-// Handle malformatted float literals (e.g., "123.")
-[0-9]+\.[0-9]* { 
-    updatePosition(yytext());
-    ErrorMsg.printError("Malformatted float literal: " + yytext(), yyline(), yycolumn()); 
-}
+// Números enteros
+[0-9]+           { return new Symbol(sym.INT_LITERAL, Integer.parseInt(yytext())); }
 
-// Identifiers
-[a-zA-Z_][a-zA-Z0-9_]* { updatePosition(yytext()); return createSymbol(sym.IDENTIFIER, yytext()); }
+// Operadores
+"+"              { return new Symbol(sym.PLUS); }
+"-"              { return new Symbol(sym.MINUS); }
+"*"              { return new Symbol(sym.TIMES); }
+"/"              { return new Symbol(sym.DIVIDE); }
+"=="             { return new Symbol(sym.EQUALS); }
+"!="             { return new Symbol(sym.NOT_EQUALS); }
+"<"              { return new Symbol(sym.LT); }
+"<="             { return new Symbol(sym.LE); }
+">"              { return new Symbol(sym.GT); }
+">="             { return new Symbol(sym.GE); }
 
-// String literals (assuming Decaf includes them)
-\"([^\"]|\\.)*\" { updatePosition(yytext()); return createSymbol(sym.STRINGLIT, yytext()); }
+// Delimitadores
+"("              { return new Symbol(sym.LPAREN); }
+")"              { return new Symbol(sym.RPAREN); }
+"{"              { return new Symbol(sym.LBRACE); }
+"}"              { return new Symbol(sym.RBRACE); }
+";"              { return new Symbol(sym.SEMICOLON); }
+","              { return new Symbol(sym.COMMA); }
 
-// Error handling for illegal characters
-. { 
-    updatePosition(yytext());
-    ErrorMsg.printError("Illegal character: " + yytext(), yyline(), yycolumn()); 
+// Errores de sintaxis
+.                { System.err.println("Error de sintaxis en la línea " + line + ": carácter inesperado '" + yytext() + "'"); }
+
+// Fin del archivo
+<<EOF>>          { return new Symbol(sym.EOF); }
+
+// Método para manejar errores
+void yyerror(String message) {
+    System.err.println("Error: " + message);
 }

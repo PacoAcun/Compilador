@@ -1,4 +1,3 @@
 int b = 40;
 
-
 return b;
