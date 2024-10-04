@@ -112,4 +112,5 @@ En este comando:
 
 ## 6. Conclusión
 
-La implementación del scanner para el lenguaje Decaf es crucial para el análisis léxico del compilador. Debe ser capaz de identificar correctamente los tokens, manejar errores léxicos y integrarse adecuadamente con el parser CUP. La documentación proporcionada detalla la estructura del proyecto, la implementación del scanner, y cómo integrarlo con el CLI para garantizar un análisis léxico efectivo.
+La implementación del scanner para el lenguaje Decaf es crucial para el análisis léxico del compilador. Debe ser capaz de identificar correctamente los tokens, manejar errores léxicos y integrarse adecuadamente con el parser CUP. La documentación proporcionada detalla la estructura del proyecto, la implementación del scanner, y cómo integrarlo con el CLI para garantizar un análisis léxico efectivo..
+
