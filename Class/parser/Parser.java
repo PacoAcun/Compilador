@@ -9,6 +9,7 @@ import java_cup.runtime.*;
 import parser.sym;
 import java.io.*;
 import ast.Program;
+import scanner.Scanner;
 
 /** CUP v0.11b 20160615 (GIT 4ac7450) generated parser.
   */
@@ -21,7 +22,8 @@ public class Parser extends java_cup.runtime.lr_parser {
 
   /** Default constructor. */
   @Deprecated
-  public Parser() {super();}
+  public Parser(Scanner s) { super(s); }
+
 
   /** Constructor which sets the default scanner. */
   @Deprecated

@@ -1,8 +1,0 @@
-Token: 1 | Valor: int | Línea: 1, Columna: 4
-Token: 38 | Valor: b | Línea: 1, Columna: 6
-Token: 37 | Valor: = | Línea: 1, Columna: 8
-Token: 22 | Valor: 40 | Línea: 1, Columna: 11
-Token: 39 | Valor: ; | Línea: 1, Columna: 12
-Token: 4 | Valor: return | Línea: 3, Columna: 7
-Token: 38 | Valor: b | Línea: 3, Columna: 9
-Token: 39 | Valor: ; | Línea: 3, Columna: 10
