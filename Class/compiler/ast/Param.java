@@ -1,4 +1,4 @@
-package compiler.ast;
+package ast;
 
 public class Param {
     // TODO: Add fields and methods

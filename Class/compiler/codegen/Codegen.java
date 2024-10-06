@@ -1,13 +1,13 @@
-package compiler.codegen;
+package codegen;
 
-import compiler.irt.*;;
+import irt.Semantic;;
 
 // Clase Codegen
 public class Codegen {
-    private Irt irt;
+    private Semantic semantic;
 
-    public Codegen(Irt irt) {
-        this.irt = irt;
+    public Codegen(Semantic semantic) {
+        this.semantic = semantic;
     }
 
     public void generateCode(String outputFileName) {

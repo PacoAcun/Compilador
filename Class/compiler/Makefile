@@ -1,4 +1,4 @@
-JAVAC=javac
+javac -cp "lib/java-cup-11b.jar;lib/jflex-full-1.9.1.jar" -d bin ast/*.java ast/ASTGenerator.java codegen/*.java irt/*.java opt/*.java parser/*.java scanner/*.java semantic/*.java Compiler.javaJAVAC=javac
 JAVA=java
 CUPJAR=lib/java-cup-11b.jar
 CUPRUNTIME=lib/java-cup-11b-runtime.jar

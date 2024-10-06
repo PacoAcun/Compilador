@@ -1,4 +1,4 @@
-package compiler.ast;
+package ast;
 
 import java.io.File;
 import java.io.FileWriter;

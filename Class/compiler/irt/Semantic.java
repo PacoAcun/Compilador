@@ -1,6 +1,6 @@
-package compiler.semantic;
+package irt;
 
-import compiler.ast.Ast;
+import ast.Ast;
 
 public class Semantic {
     private Ast ast;

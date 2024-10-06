@@ -5,26 +5,50 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09e7d7bb-0c39-4db4-8f1f-606b82907696" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/bin/compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/bin/compiler/Compiler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/bin/parser/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/bin/parser/Parser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/bin/parser/sym.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/bin/scanner/Scanner$ErrorMsg.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/bin/scanner/Scanner.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/bin/scanner/Scanner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/compiler/Compiler.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/Compiler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Class/compiler/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/Compiler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Class/input.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/output.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/parser/Parser$CUP$Parser$actions.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/Parser$CUP$Parser$actions.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/parser/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/Parser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/Parser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/parser/sym.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/sym.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/parser/sym.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/parser/sym.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner$ErrorMsg.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/scanner/Scanner.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner.flex" beforeDir="false" afterPath="$PROJECT_DIR$/Class/scanner/Scanner.flex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/scanner/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/scanner/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/Makefile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/ASTGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/ASTGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Arg_list_non_empty.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Arg_list_non_empty.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Ast.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Ast.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Block_item_list.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Block_item_list.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Class_body_member_list.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Class_body_member_list.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Decl_list.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Decl_list.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Declaration.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Declaration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Expression.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Expression.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Func_decl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Func_decl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Param.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Param.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Param_list.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Param_list.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Program.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Program.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Statement.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Statement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Stmt_list.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Stmt_list.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Type.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Type.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Var_decl.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Var_decl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/ASTGenerator.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Arg_list_non_empty.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Ast.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Block_item_list.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Class_body_member_list.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Decl_list.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Declaration.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Expression.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Func_decl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Param.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Param_list.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Program.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Statement.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Stmt_list.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Type.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/ast/Var_decl.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/bin/compiler/semantic/Semantic.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/codegen/Codegen.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/codegen/Codegen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/irt/Semantic.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/irt/Semantic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/parser/Parser.cup" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/parser/Parser.cup" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/parser/Parser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/parser/sym.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/parser/sym.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/scanner/Scanner.flex" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/scanner/Scanner.flex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/scanner/Scanner.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/scanner/Scanner.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/semantic/Semantic.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/semantic/Semantic.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

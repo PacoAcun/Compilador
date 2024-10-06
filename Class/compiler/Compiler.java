@@ -1,13 +1,13 @@
 package compiler;
 
-import compiler.scanner.Scanner;
-import compiler.parser.Parser;
+import scanner.Scanner;
+import parser.Parser;
 import java_cup.runtime.Symbol;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.FileReader;
-import compiler.parser.sym;
+import parser.sym;
 
 
 public class Compiler {

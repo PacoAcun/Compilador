@@ -1,4 +1,4 @@
-package compiler.ast;
+package ast;
 
 public class Decl_list {
     // TODO: Add fields and methods

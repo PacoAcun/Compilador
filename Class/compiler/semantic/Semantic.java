@@ -1,4 +1,4 @@
-package compiler.semantic;
+package semantic;
 
 public class Semantic {
     public void analyze() {
