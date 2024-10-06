@@ -1,116 +1,111 @@
 package compiler;
 
-import scanner.Scanner;
-import parser.sym;
-import parser.Parser;
-import java.io.FileReader;
-import java.io.Reader;
+import compiler.scanner.Scanner;
+import compiler.parser.Parser;
 import java_cup.runtime.Symbol;
-import opt.Algebraic;
-import opt.ConstantF;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.FileReader;
+import compiler.parser.sym;
+
 
 public class Compiler {
     public static void main(String[] args) {
-        System.out.println("Compiler started...");
-
-        // Manejo de argumentos
-        if (args.length == 0 || args[0].equals("-h")) {
+        if (args.length < 1) {
             printHelp();
-            return;
+            System.exit(1);
         }
 
-        String inputFileName = null;
-        String outputFileName = "output.txt";
-        String target = "codegen";  // El valor por defecto es codegen
+        String filename = "";
+        String output = "output.txt";
+        String target = "codegen"; // Por defecto
+        boolean debug = false;
 
+        // Procesamiento de argumentos
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "-o":
-                    outputFileName = args[++i];
+                    output = args[++i];
                     break;
                 case "-target":
                     target = args[++i];
                     break;
-                default:
-                    inputFileName = args[i];
+                case "-debug":
+                    debug = true;
                     break;
+                case "-h":
+                    printHelp();
+                    System.exit(0);
+                    break;
+                default:
+                    filename = args[i];
             }
         }
 
-        if (inputFileName == null) {
+        // Validar que se haya especificado un archivo de entrada
+        if (filename.isEmpty()) {
+            System.err.println("Error: No se especificó un archivo de entrada.");
             printHelp();
-            return;
+            System.exit(1);
         }
 
-        System.out.println("Target: " + target);
-
-        try {
-            Reader reader = new FileReader(inputFileName);
-            PrintWriter writer = new PrintWriter(new FileWriter(outputFileName));
-
-            // Inicializa el scanner
-            Scanner scanner = new Scanner(reader);
-
-            // Fase de análisis léxico (scan)
+        try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
             if (target.equals("scan")) {
-                Symbol token;
-                while ((token = scanner.next_token()).sym != sym.EOF) {
-                    String output = "Token: " + token.sym + " | Valor: " + token.value + " | Línea: " + token.left + ", Columna: " + token.right;
-                    System.out.println(output);
-                    writer.println(output);
+                writer.println("stage: scanning");
+                try (FileReader fileReader = new FileReader(filename)) {
+                    Scanner scanner = new Scanner(fileReader); // Crear el escáner
+
+                    while (!scanner.yyatEOF()) { // Leer tokens hasta el EOF
+                        Symbol token = scanner.next_token();
+                        if (token.sym == sym.EOF) break;
+                        writer.println("Token: " + token.value + " en la línea " + token.left + ", columna " + token.right);
+                        if (debug) {
+                            System.out.println("Debugging scan: Token -> " + token.value);
+                        }
+                    }
+                } catch (IOException e) {
+                    System.err.println("Error al leer el archivo: " + e.getMessage());
                 }
-                writer.close();
-                return; // Finaliza aquí si solo es escaneo
-            }
-
-            // Fase de análisis sintáctico (parse)
-            if (target.equals("parse") || target.equals("codegen")) {
-                System.out.println("Starting parser...");
-                Parser parser = new Parser(scanner);  // Instancia del parser
-                try {
-                    Symbol parseTree = parser.parse();  // Ejecuta el análisis sintáctico
-                    System.out.println("Parsing completed successfully.");
-                    writer.println("Parsing completed successfully.");
-                } catch (Exception e) {
-                    System.out.println("Error during parsing: " + e.getMessage());
-                    e.printStackTrace();
+                
+            } else if (target.equals("parse")) {
+                writer.println("stage: parsing");
+                try (FileReader fileReader = new FileReader(filename)) {
+                    Scanner scanner = new Scanner(fileReader);
+                    Parser parser = new Parser(scanner);
+                    try {
+                        Symbol result = parser.parse();
+                        writer.println("Parsing completed successfully.");
+                        if (debug) System.out.println("Debugging parse: Completed successfully");
+                    } catch (RuntimeException e) {
+                        // Captura la excepción lanzada por el scanner
+                        writer.println(e.getMessage());
+                        if (debug) System.out.println(e.getMessage());
+                    } catch (Exception e) {
+                        writer.println("Error during parsing: " + e.getMessage());
+                        // Añadir esta línea para imprimir la traza de la excepción en el archivo de salida
+                        e.printStackTrace(writer);
+                        if (debug) {
+                            System.out.println("Debugging parse: Error occurred");
+                            e.printStackTrace(System.out);
+                        }
+                    }
+                } catch (IOException e) {
+                    writer.println("Error al leer el archivo: " + e.getMessage());
                 }
             }
-
-            // Optimización Algebraica
-            if (target.equals("optimize") || target.equals("codegen")) {
-                Algebraic algebraicOptimizer = new Algebraic();
-                // ast = algebraicOptimizer.optimize(ast);
-                writer.println("Optimización algebraica completada.");
-            }
-
-            // Propagación de Constantes
-            if (target.equals("optimize") || target.equals("codegen")) {
-                ConstantF constantOptimizer = new ConstantF();
-                // ast = constantOptimizer.optimize(ast);
-                writer.println("Optimización de constantes completada.");
-            }
-
-            // Fase de generación de código
-            if (target.equals("codegen")) {
-                // CodeGenerator codegen = new CodeGenerator();
-                // codegen.generate(ast, writer);
-                writer.println("Código generado exitosamente.");
-            }
-
-            writer.close(); // Cierra el escritor
-
-        } catch (Exception e) {
-            e.printStackTrace();
+            // Otras fases como ast, semantic, irt, codegen se agregarán aquí
+        } catch (IOException e) {
+            System.err.println("Error al escribir el archivo de salida: " + e.getMessage());
         }
     }
 
+    // Método para imprimir la ayuda del compilador
     private static void printHelp() {
-        System.out.println("Usage: java compiler.Compiler [options] <filename>");
-        System.out.println("Options:");
-        System.out.println("-o <outname>    Write output to <outname>");
-        System.out.println("-target <stage> Compile up to <stage> stage (scan, parse, ast, etc.)");
+        System.out.println("Uso: java Compiler [option] <filename>");
+        System.out.println("-o <outname>: Especifica el nombre del archivo de salida.");
+        System.out.println("-target <stage>: scan, parse, ast, semantic, irt, codegen.");
+        System.out.println("-opt <opt_stage>: constant, algebraic.");
+        System.out.println("-debug <stage>: Activa el modo debug.");
     }
 }
