@@ -1,14 +1,14 @@
 package compiler;
 
-import scanner.Scanner;
-import parser.Parser;
+
+import compiler.scanner.Scanner;
+import compiler.parser.sym;
+import compiler.parser.Parser;
 import java_cup.runtime.Symbol;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.FileReader;
-import parser.sym;
-
 
 public class Compiler {
     public static void main(String[] args) {
@@ -51,61 +51,81 @@ public class Compiler {
         }
 
         try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
-            if (target.equals("scan")) {
-                writer.println("stage: scanning");
-                try (FileReader fileReader = new FileReader(filename)) {
-                    Scanner scanner = new Scanner(fileReader); // Crear el escáner
-
-                    while (!scanner.yyatEOF()) { // Leer tokens hasta el EOF
-                        Symbol token = scanner.next_token();
-                        if (token.sym == sym.EOF) break;
-                        writer.println("Token: " + token.value + " en la línea " + token.left + ", columna " + token.right);
-                        if (debug) {
-                            System.out.println("Debugging scan: Token -> " + token.value);
-                        }
-                    }
-                } catch (IOException e) {
-                    System.err.println("Error al leer el archivo: " + e.getMessage());
-                }
-                
-            } else if (target.equals("parse")) {
-                writer.println("stage: parsing");
-                try (FileReader fileReader = new FileReader(filename)) {
-                    Scanner scanner = new Scanner(fileReader);
-                    Parser parser = new Parser(scanner);
-                    try {
-                        Symbol result = parser.parse();
-                        writer.println("Parsing completed successfully.");
-                        if (debug) System.out.println("Debugging parse: Completed successfully");
-                    } catch (RuntimeException e) {
-                        // Captura la excepción lanzada por el scanner
-                        writer.println(e.getMessage());
-                        if (debug) System.out.println(e.getMessage());
-                    } catch (Exception e) {
-                        writer.println("Error during parsing: " + e.getMessage());
-                        // Añadir esta línea para imprimir la traza de la excepción en el archivo de salida
-                        e.printStackTrace(writer);
-                        if (debug) {
-                            System.out.println("Debugging parse: Error occurred");
-                            e.printStackTrace(System.out);
-                        }
-                    }
-                } catch (IOException e) {
-                    writer.println("Error al leer el archivo: " + e.getMessage());
-                }
+            switch (target) {
+                case "scan":
+                    runScan(filename, writer, debug);
+                    break;
+                case "parse":
+                    runParse(filename, writer, debug);
+                    break;
+                default:
+                    System.err.println("Objetivo desconocido: " + target);
             }
-            // Otras fases como ast, semantic, irt, codegen se agregarán aquí
         } catch (IOException e) {
             System.err.println("Error al escribir el archivo de salida: " + e.getMessage());
         }
     }
 
-    // Método para imprimir la ayuda del compilador
+    private static void runScan(String filename, PrintWriter writer, boolean debug) throws IOException {
+        writer.println("stage: scanning");
+        try (FileReader fileReader = new FileReader(filename)) {
+            Scanner scanner = new Scanner(fileReader);
+            while (!scanner.yyatEOF()) {
+                Symbol token = scanner.next_token();
+                if (token.sym == sym.EOF) break;
+
+                // Determinar si es palabra reservada
+                String tipoToken = esReservada(token.sym) ? "reservada" : "no reservada";
+
+                // Imprimir el token en el formato adecuado
+                writer.printf("Token | Valor: %s | Columna: %d | Fila: %d | Tipo: %s%n",
+                        token.value, token.right, token.left, tipoToken);
+
+                if (debug) {
+                    System.out.printf("Token | Valor: %s | Columna: %d | Fila: %d | Tipo: %s%n",
+                            token.value, token.right, token.left, tipoToken);
+                }
+            }
+        }
+    }
+
+    private static void runParse(String filename, PrintWriter writer, boolean debug) throws IOException {
+        writer.println("stage: parsing");
+        try (FileReader fileReader = new FileReader(filename)) {
+            Scanner scanner = new Scanner(fileReader);
+            Parser parser = new Parser(scanner);
+            Symbol result = parser.parse();
+            writer.println("Parsing completed successfully.");
+            if (debug) {
+                System.out.println("Debug: Parsing completed.");
+            }
+        } catch (Exception e) {
+            writer.println("Error during parsing: " + e.getMessage());
+        }
+    }
+
+    private static boolean esReservada(int tokenSym) {
+        switch (tokenSym) {
+            case sym.CLASS:
+            case sym.INT:
+            case sym.VOID:
+            case sym.BOOLEAN:
+            case sym.TRUE:
+            case sym.FALSE:
+            case sym.IF:
+            case sym.RETURN:
+            case sym.WHILE:
+            case sym.FOR:
+                return true;
+            default:
+                return false;
+        }
+    }
+
     private static void printHelp() {
         System.out.println("Uso: java Compiler [option] <filename>");
         System.out.println("-o <outname>: Especifica el nombre del archivo de salida.");
-        System.out.println("-target <stage>: scan, parse, ast, semantic, irt, codegen.");
-        System.out.println("-opt <opt_stage>: constant, algebraic.");
-        System.out.println("-debug <stage>: Activa el modo debug.");
+        System.out.println("-target <stage>: scan, parse.");
+        System.out.println("-debug: Activa el modo debug.");
     }
 }

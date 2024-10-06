@@ -1,7 +1,7 @@
-package parser;
+package compiler.parser;
 
 import java_cup.runtime.*;
-import scanner.Scanner;
+import compiler.scanner.Scanner;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -44,8 +44,6 @@ parser code {:
 
         // Imprimir en la consola
         System.err.println(errorMessage);
-
-
     }
 
     private void writeToFile(String message) {
@@ -58,10 +56,15 @@ parser code {:
 :};
 
 /* Terminals (tokens returned by the scanner) */
-terminal CLASS, INT, VOID, BOOLEAN, TRUE, FALSE, IF, RETURN;
-terminal ASSIGN, EQ, SEMI, LBRACE, RBRACE, LPAREN, RPAREN, PLUS, MINUS, COMMA;
+terminal CLASS, INT, VOID, BOOLEAN, TRUE, FALSE, IF, RETURN, WHILE, FOR;
+terminal ASSIGN, EQ, NOT_EQUALS, SEMI, LBRACE, RBRACE, LPAREN, RPAREN, PLUS, MINUS, TIMES, DIVIDE, COMMA;
+terminal LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, DOT, AND, OR, MOD, LBRACKET;
 terminal String ID;
 terminal Integer INT_LITERAL;
+terminal Integer HEX_LITERAL;  
+terminal String STRING_LITERAL;
+terminal Character CHAR_LITERAL;
+
 
 /* Non-terminals */
 non terminal Object program, class_decl, method_decl, var_decl, type;
@@ -71,9 +74,13 @@ non terminal Object block_item_list, block_item, decl, id_list, assignment;
 non terminal Object arg_list_non_empty;
 
 /* Precedences */
-precedence left EQ;
-precedence right ASSIGN;
+precedence left OR;
+precedence left AND;
+precedence left EQ, NOT_EQUALS;
+precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS;
 precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
+precedence right ASSIGN;
 
 /* The grammar rules */
 start with program;
@@ -111,6 +118,8 @@ id_list ::= id_list COMMA ID:name
 
 statement ::= assignment SEMI
             | IF LPAREN expr RPAREN block
+            | WHILE LPAREN expr RPAREN block
+            | FOR LPAREN assignment SEMI expr SEMI assignment RPAREN block
             | RETURN expr SEMI
             | block;
 
@@ -118,9 +127,18 @@ assignment ::= ID:name ASSIGN expr;
 
 expr ::= expr:e1 PLUS expr:e2
        | expr:e1 MINUS expr:e2
+       | expr:e1 TIMES expr:e2
+       | expr:e1 DIVIDE expr:e2
+       | expr:e1 LESS_THAN expr:e2
+       | expr:e1 GREATER_THAN expr:e2
+       | expr:e1 LESS_THAN_EQUALS expr:e2
+       | expr:e1 GREATER_THAN_EQUALS expr:e2
        | expr:e1 EQ expr:e2
+       | expr:e1 NOT_EQUALS expr:e2
        | ID:name
        | INT_LITERAL:value
+       | STRING_LITERAL:value
+       | CHAR_LITERAL:value
        | ID:name LPAREN arg_list RPAREN
        | TRUE
        | FALSE
