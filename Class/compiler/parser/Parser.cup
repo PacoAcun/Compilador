@@ -1,3 +1,4 @@
+
 package compiler.parser;
 
 import java_cup.runtime.*;
@@ -34,7 +35,7 @@ parser code {:
         String tokenValue = s.value == null ? "" : s.value.toString();
         String errorMessage = String.format(
             "Error Sintáctico en la Línea %d, Columna %d: Token '%s' no reconocido. Tipo: %s",
-            s.right + 1, s.left + 1, tokenValue, tokenName
+            s.left, s.right, tokenValue, tokenName
         );
 
         // Escribir en el archivo output.txt
@@ -53,7 +54,7 @@ parser code {:
     }
 :};
 
-/* Terminals (tokens returned by the scanner) */
+/* Terminals (tokens retornados por el scanner) */
 terminal CLASS, INT, VOID, BOOLEAN, TRUE, FALSE, IF, ELSE, RETURN, WHILE, FOR, NEW;
 terminal ASSIGN, EQ, NOT_EQUALS, SEMI, LBRACE, RBRACE, LPAREN, RPAREN, PLUS, MINUS, TIMES, DIVIDE, COMMA;
 terminal LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AND, OR, MOD, LBRACKET, RBRACKET;
@@ -67,9 +68,10 @@ non terminal program, class_decl, method_decl, type;
 non terminal statement, expr, param_list, arg_list;
 non terminal class_body_member_list, class_body_member, field_decl, block;
 non terminal block_item_list, block_item, decl, id_list, assignment;
+non terminal for_init, for_update, decl_assign;
 non terminal arg_list_non_empty, if_statement;
 
-/* Precedences */
+/* Precedencias */
 precedence left OR;
 precedence left AND;
 precedence left EQ, NOT_EQUALS;
@@ -78,7 +80,7 @@ precedence left PLUS, MINUS;
 precedence left TIMES, DIVIDE, MOD;
 precedence right ASSIGN;
 
-/* The grammar rules */
+/* La gramática */
 start with program;
 
 program ::= class_decl;
@@ -109,15 +111,17 @@ block_item ::= decl
 
 decl ::= type id_list SEMI;
 
+decl_assign ::= type id_list ASSIGN expr;
+
 id_list ::= id_list COMMA ID:name
           | ID:name;
 
 statement ::= assignment SEMI
             | if_statement
             | WHILE LPAREN expr RPAREN block
-            | FOR LPAREN assignment SEMI expr SEMI assignment RPAREN block
+            | FOR LPAREN for_init SEMI expr SEMI for_update RPAREN block
             | RETURN expr SEMI
-            | expr SEMI         /* Agregado para permitir expresiones seguidas de ';' */
+            | expr SEMI         /* Permitir expresiones seguidas de ';' */
             | block;
 
 if_statement ::= IF LPAREN expr RPAREN block
@@ -125,21 +129,21 @@ if_statement ::= IF LPAREN expr RPAREN block
 
 assignment ::= ID:name ASSIGN expr;
 
-expr ::= expr:e1 PLUS expr:e2
-       | expr:e1 MINUS expr:e2
-       | expr:e1 TIMES expr:e2
-       | expr:e1 DIVIDE expr:e2
-       | expr:e1 MOD expr:e2
-       | expr:e1 LESS_THAN expr:e2
-       | expr:e1 GREATER_THAN expr:e2
-       | expr:e1 LESS_THAN_EQUALS expr:e2
-       | expr:e1 GREATER_THAN_EQUALS expr:e2
-       | expr:e1 EQ expr:e2
-       | expr:e1 NOT_EQUALS expr:e2
-       | expr:e1 AND expr:e2
-       | expr:e1 OR expr:e2
-       | expr:e1 LBRACKET expr:e2 RBRACKET    /* Acceso a arreglos */
-       | NEW type LBRACKET expr RBRACKET      /* Creación de arreglos */
+expr ::= expr PLUS expr
+       | expr MINUS expr
+       | expr TIMES expr
+       | expr DIVIDE expr
+       | expr MOD expr
+       | expr LESS_THAN expr
+       | expr GREATER_THAN expr
+       | expr LESS_THAN_EQUALS expr
+       | expr GREATER_THAN_EQUALS expr
+       | expr EQ expr
+       | expr NOT_EQUALS expr
+       | expr AND expr
+       | expr OR expr
+       | expr LBRACKET expr RBRACKET    /* Acceso a arreglos */
+       | NEW type LBRACKET expr RBRACKET  /* Creación de arreglos */
        | ID:name
        | INT_LITERAL:value
        | STRING_LITERAL:value
@@ -147,7 +151,7 @@ expr ::= expr:e1 PLUS expr:e2
        | ID:name LPAREN arg_list RPAREN
        | TRUE
        | FALSE
-       | LPAREN expr:e RPAREN;
+       | LPAREN expr RPAREN;
 
 arg_list ::= arg_list_non_empty
            | /* empty */;
@@ -159,3 +163,8 @@ type ::= type LBRACKET RBRACKET
        | INT
        | VOID
        | BOOLEAN;
+
+for_init ::= decl_assign
+           | assignment;
+
+for_update ::= assignment;

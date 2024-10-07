@@ -1,2 +1,59 @@
-stage: parsing
-Parsing completed successfully.
+stage: scanning
+Token | Valor: class | Columna: 1 | Fila: 5 | Tipo: reservada
+Token | Valor: Program | Columna: 7 | Fila: 5 | Tipo: no reservada
+Token | Valor: { | Columna: 15 | Fila: 5 | Tipo: no reservada
+Token | Valor: int | Columna: 3 | Fila: 9 | Tipo: reservada
+Token | Valor: x | Columna: 7 | Fila: 9 | Tipo: no reservada
+Token | Valor: ; | Columna: 8 | Fila: 9 | Tipo: no reservada
+Token | Valor: boolean | Columna: 3 | Fila: 11 | Tipo: reservada
+Token | Valor: y | Columna: 11 | Fila: 11 | Tipo: no reservada
+Token | Valor: ; | Columna: 12 | Fila: 11 | Tipo: no reservada
+Token | Valor: int | Columna: 3 | Fila: 13 | Tipo: reservada
+Token | Valor: [ | Columna: 6 | Fila: 13 | Tipo: no reservada
+Token | Valor: ] | Columna: 7 | Fila: 13 | Tipo: no reservada
+Token | Valor: z | Columna: 9 | Fila: 13 | Tipo: no reservada
+Token | Valor: ; | Columna: 10 | Fila: 13 | Tipo: no reservada
+Token | Valor: void | Columna: 3 | Fila: 19 | Tipo: reservada
+Token | Valor: main | Columna: 8 | Fila: 19 | Tipo: no reservada
+Token | Valor: ( | Columna: 12 | Fila: 19 | Tipo: no reservada
+Token | Valor: ) | Columna: 13 | Fila: 19 | Tipo: no reservada
+Token | Valor: { | Columna: 15 | Fila: 19 | Tipo: no reservada
+Token | Valor: x | Columna: 5 | Fila: 23 | Tipo: no reservada
+Token | Valor: = | Columna: 7 | Fila: 23 | Tipo: no reservada
+Token | Valor: 5 | Columna: 9 | Fila: 23 | Tipo: no reservada
+Token | Valor: ; | Columna: 10 | Fila: 23 | Tipo: no reservada
+Token | Valor: y | Columna: 5 | Fila: 25 | Tipo: no reservada
+Token | Valor: = | Columna: 7 | Fila: 25 | Tipo: no reservada
+Token | Valor: true | Columna: 9 | Fila: 25 | Tipo: reservada
+Token | Valor: ; | Columna: 13 | Fila: 25 | Tipo: no reservada
+Token | Valor: z | Columna: 5 | Fila: 27 | Tipo: no reservada
+Token | Valor: = | Columna: 7 | Fila: 27 | Tipo: no reservada
+Token | Valor: new | Columna: 9 | Fila: 27 | Tipo: no reservada
+Token | Valor: int | Columna: 13 | Fila: 27 | Tipo: reservada
+Token | Valor: [ | Columna: 16 | Fila: 27 | Tipo: no reservada
+Token | Valor: 10 | Columna: 17 | Fila: 27 | Tipo: no reservada
+Token | Valor: ] | Columna: 19 | Fila: 27 | Tipo: no reservada
+Token | Valor: ; | Columna: 20 | Fila: 27 | Tipo: no reservada
+Token | Valor: if | Columna: 5 | Fila: 33 | Tipo: reservada
+Token | Valor: ( | Columna: 8 | Fila: 33 | Tipo: no reservada
+Token | Valor: x | Columna: 9 | Fila: 33 | Tipo: no reservada
+Token | Valor: > | Columna: 11 | Fila: 33 | Tipo: no reservada
+Token | Valor: 5 | Columna: 13 | Fila: 33 | Tipo: no reservada
+Token | Valor: ) | Columna: 14 | Fila: 33 | Tipo: no reservada
+Token | Valor: { | Columna: 16 | Fila: 33 | Tipo: no reservada
+Token | Valor: println | Columna: 7 | Fila: 35 | Tipo: no reservada
+Token | Valor: ( | Columna: 14 | Fila: 35 | Tipo: no reservada
+Token | Valor: "x es mayor que 5" | Columna: 15 | Fila: 35 | Tipo: no reservada
+Token | Valor: ) | Columna: 33 | Fila: 35 | Tipo: no reservada
+Token | Valor: ; | Columna: 34 | Fila: 35 | Tipo: no reservada
+Token | Valor: } | Columna: 5 | Fila: 37 | Tipo: no reservada
+Token | Valor: else | Columna: 7 | Fila: 37 | Tipo: no reservada
+Token | Valor: { | Columna: 12 | Fila: 37 | Tipo: no reservada
+Token | Valor: println | Columna: 7 | Fila: 39 | Tipo: no reservada
+Token | Valor: ( | Columna: 14 | Fila: 39 | Tipo: no reservada
+Token | Valor: "x es menor o igual que 5" | Columna: 15 | Fila: 39 | Tipo: no reservada
+Token | Valor: ) | Columna: 41 | Fila: 39 | Tipo: no reservada
+Token | Valor: ; | Columna: 42 | Fila: 39 | Tipo: no reservada
+Token | Valor: } | Columna: 5 | Fila: 41 | Tipo: no reservada
+Token | Valor: } | Columna: 3 | Fila: 43 | Tipo: no reservada
+Token | Valor: } | Columna: 1 | Fila: 45 | Tipo: no reservada

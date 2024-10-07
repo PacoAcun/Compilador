@@ -12,5 +12,12 @@ class Program {
     x = 5; // asignar 5 a x
     y = true; // asignar true a y
     z = new int[10]; // crear un array de 10 enteros
+
+    // Uso de condicionales (if-else)
+    if (x > 5) { // si x es mayor que 5
+      println("x es mayor que 5"); // imprimir mensaje
+    } else { // si no
+      println("x es menor o igual que 5"); // imprimir mensaje
+    }
   }
 }
