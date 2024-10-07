@@ -8,45 +8,46 @@ package compiler.parser;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int DIVIDE = 23;
-  public static final int STRING_LITERAL = 37;
-  public static final int LBRACKET = 33;
-  public static final int CHAR_LITERAL = 38;
-  public static final int LPAREN = 18;
-  public static final int SEMI = 15;
+  public static final int DIVIDE = 25;
+  public static final int STRING_LITERAL = 38;
+  public static final int LBRACKET = 34;
+  public static final int CHAR_LITERAL = 39;
+  public static final int LPAREN = 20;
+  public static final int SEMI = 17;
   public static final int INT = 3;
-  public static final int FOR = 11;
-  public static final int MINUS = 21;
-  public static final int GREATER_THAN = 26;
-  public static final int RPAREN = 19;
-  public static final int AND = 30;
-  public static final int OR = 31;
-  public static final int COMMA = 24;
-  public static final int HEX_LITERAL = 36;
+  public static final int FOR = 12;
+  public static final int MINUS = 23;
+  public static final int GREATER_THAN = 28;
+  public static final int RPAREN = 21;
+  public static final int AND = 31;
+  public static final int OR = 32;
+  public static final int COMMA = 26;
   public static final int CLASS = 2;
-  public static final int PLUS = 20;
-  public static final int ASSIGN = 12;
+  public static final int PLUS = 22;
+  public static final int ASSIGN = 14;
   public static final int IF = 8;
-  public static final int DOT = 29;
-  public static final int ID = 34;
+  public static final int ID = 36;
   public static final int EOF = 0;
   public static final int BOOLEAN = 5;
-  public static final int RETURN = 9;
+  public static final int RETURN = 10;
+  public static final int RBRACKET = 35;
   public static final int TRUE = 6;
+  public static final int NEW = 13;
   public static final int error = 1;
-  public static final int MOD = 32;
+  public static final int MOD = 33;
   public static final int VOID = 4;
-  public static final int EQ = 13;
-  public static final int TIMES = 22;
-  public static final int LBRACE = 16;
-  public static final int WHILE = 10;
-  public static final int NOT_EQUALS = 14;
-  public static final int RBRACE = 17;
+  public static final int EQ = 15;
+  public static final int TIMES = 24;
+  public static final int LBRACE = 18;
+  public static final int ELSE = 9;
+  public static final int WHILE = 11;
+  public static final int NOT_EQUALS = 16;
+  public static final int RBRACE = 19;
   public static final int FALSE = 7;
-  public static final int GREATER_THAN_EQUALS = 28;
-  public static final int LESS_THAN = 25;
-  public static final int LESS_THAN_EQUALS = 27;
-  public static final int INT_LITERAL = 35;
+  public static final int GREATER_THAN_EQUALS = 30;
+  public static final int LESS_THAN = 27;
+  public static final int LESS_THAN_EQUALS = 29;
+  public static final int INT_LITERAL = 37;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
@@ -57,9 +58,11 @@ public class sym {
   "TRUE",
   "FALSE",
   "IF",
+  "ELSE",
   "RETURN",
   "WHILE",
   "FOR",
+  "NEW",
   "ASSIGN",
   "EQ",
   "NOT_EQUALS",
@@ -77,14 +80,13 @@ public class sym {
   "GREATER_THAN",
   "LESS_THAN_EQUALS",
   "GREATER_THAN_EQUALS",
-  "DOT",
   "AND",
   "OR",
   "MOD",
   "LBRACKET",
+  "RBRACKET",
   "ID",
   "INT_LITERAL",
-  "HEX_LITERAL",
   "STRING_LITERAL",
   "CHAR_LITERAL"
   };

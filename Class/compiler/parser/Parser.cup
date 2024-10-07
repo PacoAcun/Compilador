@@ -4,8 +4,6 @@ import java_cup.runtime.*;
 import compiler.scanner.Scanner;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 
@@ -56,22 +54,20 @@ parser code {:
 :};
 
 /* Terminals (tokens returned by the scanner) */
-terminal CLASS, INT, VOID, BOOLEAN, TRUE, FALSE, IF, RETURN, WHILE, FOR;
+terminal CLASS, INT, VOID, BOOLEAN, TRUE, FALSE, IF, ELSE, RETURN, WHILE, FOR, NEW;
 terminal ASSIGN, EQ, NOT_EQUALS, SEMI, LBRACE, RBRACE, LPAREN, RPAREN, PLUS, MINUS, TIMES, DIVIDE, COMMA;
-terminal LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, DOT, AND, OR, MOD, LBRACKET;
+terminal LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AND, OR, MOD, LBRACKET, RBRACKET;
 terminal String ID;
 terminal Integer INT_LITERAL;
-terminal Integer HEX_LITERAL;  
 terminal String STRING_LITERAL;
 terminal Character CHAR_LITERAL;
 
-
 /* Non-terminals */
-non terminal Object program, class_decl, method_decl, var_decl, type;
-non terminal Object statement, expr, param_list, statement_list, arg_list;
-non terminal Object class_body_member_list, class_body_member, field_decl, block;
-non terminal Object block_item_list, block_item, decl, id_list, assignment;
-non terminal Object arg_list_non_empty;
+non terminal program, class_decl, method_decl, type;
+non terminal statement, expr, param_list, arg_list;
+non terminal class_body_member_list, class_body_member, field_decl, block;
+non terminal block_item_list, block_item, decl, id_list, assignment;
+non terminal arg_list_non_empty, if_statement;
 
 /* Precedences */
 precedence left OR;
@@ -79,7 +75,7 @@ precedence left AND;
 precedence left EQ, NOT_EQUALS;
 precedence left LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS;
 precedence left PLUS, MINUS;
-precedence left TIMES, DIVIDE;
+precedence left TIMES, DIVIDE, MOD;
 precedence right ASSIGN;
 
 /* The grammar rules */
@@ -117,11 +113,15 @@ id_list ::= id_list COMMA ID:name
           | ID:name;
 
 statement ::= assignment SEMI
-            | IF LPAREN expr RPAREN block
+            | if_statement
             | WHILE LPAREN expr RPAREN block
             | FOR LPAREN assignment SEMI expr SEMI assignment RPAREN block
             | RETURN expr SEMI
+            | expr SEMI         /* Agregado para permitir expresiones seguidas de ';' */
             | block;
+
+if_statement ::= IF LPAREN expr RPAREN block
+              | IF LPAREN expr RPAREN block ELSE block;
 
 assignment ::= ID:name ASSIGN expr;
 
@@ -129,12 +129,17 @@ expr ::= expr:e1 PLUS expr:e2
        | expr:e1 MINUS expr:e2
        | expr:e1 TIMES expr:e2
        | expr:e1 DIVIDE expr:e2
+       | expr:e1 MOD expr:e2
        | expr:e1 LESS_THAN expr:e2
        | expr:e1 GREATER_THAN expr:e2
        | expr:e1 LESS_THAN_EQUALS expr:e2
        | expr:e1 GREATER_THAN_EQUALS expr:e2
        | expr:e1 EQ expr:e2
        | expr:e1 NOT_EQUALS expr:e2
+       | expr:e1 AND expr:e2
+       | expr:e1 OR expr:e2
+       | expr:e1 LBRACKET expr:e2 RBRACKET    /* Acceso a arreglos */
+       | NEW type LBRACKET expr RBRACKET      /* Creación de arreglos */
        | ID:name
        | INT_LITERAL:value
        | STRING_LITERAL:value
@@ -150,6 +155,7 @@ arg_list ::= arg_list_non_empty
 arg_list_non_empty ::= arg_list_non_empty COMMA expr
                      | expr;
 
-type ::= INT
+type ::= type LBRACKET RBRACKET
+       | INT
        | VOID
        | BOOLEAN;

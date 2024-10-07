@@ -5,6 +5,7 @@ import compiler.parser.sym;
 
 %%
 
+/* Declaraciones y opciones de JFlex */
 %public
 %class Scanner
 %cup
@@ -22,9 +23,10 @@ import compiler.parser.sym;
   }
 %}
 
+/* Separador que indica el inicio de las reglas de expresión regular */
 %%
 
-// Palabras clave
+/* Palabras clave */
 "class"      { return symbol(sym.CLASS, yytext()); }
 "int"        { return symbol(sym.INT, yytext()); }
 "void"       { return symbol(sym.VOID, yytext()); }
@@ -32,14 +34,16 @@ import compiler.parser.sym;
 "true"       { return symbol(sym.TRUE, yytext()); }
 "false"      { return symbol(sym.FALSE, yytext()); }
 "if"         { return symbol(sym.IF, yytext()); }
+"else"       { return symbol(sym.ELSE, yytext()); }
 "return"     { return symbol(sym.RETURN, yytext()); }
 "while"      { return symbol(sym.WHILE, yytext()); }
 "for"        { return symbol(sym.FOR, yytext()); }
+"new"        { return symbol(sym.NEW, yytext()); }
 
-// Operadores y símbolos
-"="          { return symbol(sym.ASSIGN, yytext()); }
+/* Operadores y símbolos */
 "=="         { return symbol(sym.EQ, yytext()); }
 "!="         { return symbol(sym.NOT_EQUALS, yytext()); }
+"="          { return symbol(sym.ASSIGN, yytext()); }
 ";"          { return symbol(sym.SEMI, yytext()); }
 "{"          { return symbol(sym.LBRACE, "{"); }
 "}"          { return symbol(sym.RBRACE, "}"); }
@@ -52,36 +56,40 @@ import compiler.parser.sym;
 ","          { return symbol(sym.COMMA, yytext()); }
 "&&"         { return symbol(sym.AND, yytext()); }
 "||"         { return symbol(sym.OR, yytext()); }
-"<"          { return symbol(sym.LESS_THAN, yytext()); }
-">"          { return symbol(sym.GREATER_THAN, yytext()); }
 "<="         { return symbol(sym.LESS_THAN_EQUALS, yytext()); }
 ">="         { return symbol(sym.GREATER_THAN_EQUALS, yytext()); }
+"<"          { return symbol(sym.LESS_THAN, yytext()); }
+">"          { return symbol(sym.GREATER_THAN, yytext()); }
 "%"          { return symbol(sym.MOD, yytext()); }
-"."          { return symbol(sym.DOT, yytext()); }
-"["          { return symbol(sym.LBRACKET, yytext()); } 
+"["          { return symbol(sym.LBRACKET, "["); }
+"]"          { return symbol(sym.RBRACKET, "]"); }
 
-
-// Literales numéricos
+/* Literales numéricos */
 [0-9]+       { return symbol(sym.INT_LITERAL, Integer.parseInt(yytext())); }
-"0x"[0-9a-fA-F]+ { return symbol(sym.HEX_LITERAL, Integer.parseInt(yytext().substring(2), 16)); }
-"'"[^']"'"   { return symbol(sym.CHAR_LITERAL, yytext().charAt(1)); }
+
+/* Literales de carácter */
+\'([^\'\\]|\\.)\' { return symbol(sym.CHAR_LITERAL, yytext().charAt(1)); }
+
+/* Literales de cadena */
 \"([^\"\\]|\\.)*\"  { return symbol(sym.STRING_LITERAL, yytext()); }
 
-// Identificadores
+/* Identificadores */
 [a-zA-Z_][a-zA-Z0-9_]* { return symbol(sym.ID, yytext()); }
 
-// Saltos de línea y espacios en blanco
+/* Saltos de línea y espacios en blanco */
 \n           { yyline++; yycolumn = 0; }
 [ \t\r]+     { /* Ignorar espacios en blanco */ }
 
-// Manejo de errores (caracteres no reconocidos)
+/* Comentarios de una línea */
+"//".* { /* Ignorar comentarios de una línea */ }
+
+/* Comentarios multilínea */
+"/*"([^*]|[*][^/])*"*/" { /* Ignorar comentarios multilínea */ }
+
+/* Manejo de errores (caracteres no reconocidos) */
 .            { 
     throw new RuntimeException("Error: Carácter no reconocido '" + yytext() + "' en la línea " + (yyline + 1) + ", columna " + (yycolumn + 1));
 }
 
-// Asegúrate de tener esta regla al final
+/* Fin de archivo */
 <<EOF>>     { return symbol(sym.EOF, "EOF"); }
-
-// Comentarios
-"//".* { /* Ignorar comentarios de una línea */ }
-"/*"([^*]|[*][^/])*"*/" { /* Ignorar comentarios multilínea */ }

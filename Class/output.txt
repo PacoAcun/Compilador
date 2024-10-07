@@ -1,12 +1,2 @@
-stage: scanning
-Token | Valor: class | Columna: 1 | Fila: 5 | Tipo: reservada
-Token | Valor: Program | Columna: 7 | Fila: 5 | Tipo: no reservada
-Token | Valor: { | Columna: 15 | Fila: 5 | Tipo: no reservada
-Token | Valor: int | Columna: 3 | Fila: 9 | Tipo: reservada
-Token | Valor: x | Columna: 7 | Fila: 9 | Tipo: no reservada
-Token | Valor: ; | Columna: 8 | Fila: 9 | Tipo: no reservada
-Token | Valor: boolean | Columna: 3 | Fila: 11 | Tipo: reservada
-Token | Valor: y | Columna: 11 | Fila: 11 | Tipo: no reservada
-Token | Valor: ; | Columna: 12 | Fila: 11 | Tipo: no reservada
-Token | Valor: int | Columna: 3 | Fila: 13 | Tipo: reservada
-Token | Valor: [ | Columna: 6 | Fila: 13 | Tipo: no reservada
+stage: parsing
+Parsing completed successfully.
