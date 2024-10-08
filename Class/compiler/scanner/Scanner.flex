@@ -34,7 +34,7 @@ import compiler.parser.sym;
 "int"        { return symbol(sym.INT, yytext()); }
 "void"       { return symbol(sym.VOID, yytext()); }
 "boolean"    { return symbol(sym.BOOLEAN, yytext()); }
-"char"       { return symbol(sym.CHAR, yytext()); }  // <-- Añadir esta línea
+"char"       { return symbol(sym.CHAR, yytext()); } 
 "true"       { return symbol(sym.TRUE, yytext()); }
 "false"      { return symbol(sym.FALSE, yytext()); }
 "if"         { return symbol(sym.IF, yytext()); }

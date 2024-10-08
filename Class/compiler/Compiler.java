@@ -66,28 +66,37 @@ public class Compiler {
         }
     }
 
-    private static void runScan(String filename, PrintWriter writer, boolean debug) throws IOException {
-        writer.println("stage: scanning");
-        try (FileReader fileReader = new FileReader(filename)) {
-            Scanner scanner = new Scanner(fileReader);
-            while (!scanner.yyatEOF()) {
-                Symbol token = scanner.next_token();
-                if (token.sym == sym.EOF) break;
+private static void runScan(String filename, PrintWriter writer, boolean debug) throws IOException {
+    writer.println("stage: scanning");
+    try (FileReader fileReader = new FileReader(filename)) {
+        Scanner scanner = new Scanner(fileReader);
+        while (!scanner.yyatEOF()) {
+            Symbol token = scanner.next_token();
+            if (token.sym == sym.EOF) break;
 
-                // Determinar si es palabra reservada
-                String tipoToken = esReservada(token.sym) ? "reservada" : "no reservada";
+            // Obtener el valor del token, manejando el caso de valores nulos
+            String valorToken = (token.value != null) ? token.value.toString() : "N/A";
 
-                // Imprimir el token en el formato adecuado
-                writer.printf("Token | Valor: %s | Columna: %d | Fila: %d | Tipo: %s%n",
-                        token.value, token.right, token.left, tipoToken);
+            // Determinar si el token es una palabra reservada o no
+            String tipoToken = esReservada(token.sym) ? "reservada" : "no reservada";
 
-                if (debug) {
-                    System.out.printf("Token | Valor: %s | Columna: %d | Fila: %d | Tipo: %s%n",
-                            token.value, token.right, token.left, tipoToken);
-                }
+            // Imprimir el token en el formato adecuado
+            writer.printf("Token: %d | Valor: %s | Línea: %d | Columna: %d | Tipo: %s%n",
+                    token.sym, valorToken, token.left, token.right, tipoToken);
+
+            if (debug) {
+                System.out.printf("Token: %d | Valor: %s | Línea: %d | Columna: %d | Tipo: %s%n",
+                        token.sym, valorToken, token.left, token.right, tipoToken);
             }
         }
+    } catch (Exception e) {
+        writer.println("Error durante el análisis de escaneo: " + e.getMessage());
+        if (debug) {
+            System.err.println("Error durante el análisis de escaneo: " + e.getMessage());
+        }
     }
+}
+
 
     private static void runParse(String filename, PrintWriter writer, boolean debug) throws IOException {
         writer.println("stage: parsing");
@@ -110,17 +119,24 @@ public class Compiler {
             case sym.INT:
             case sym.VOID:
             case sym.BOOLEAN:
+            case sym.CHAR:
             case sym.TRUE:
             case sym.FALSE:
             case sym.IF:
+            case sym.ELSE:
             case sym.RETURN:
             case sym.WHILE:
             case sym.FOR:
+            case sym.NEW:
+            case sym.BREAK:
+            case sym.CONTINUE:
+            case sym.CALLOUT:
                 return true;
             default:
                 return false;
         }
     }
+
 
     private static void printHelp() {
         System.out.println("Uso: java Compiler [option] <filename>");

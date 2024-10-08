@@ -503,7 +503,7 @@ public class Parser extends java_cup.runtime.lr_parser {
         String tokenName = sym.terminalNames[s.sym];
         String tokenValue = s.value == null ? "" : s.value.toString();
         String errorMessage = String.format(
-            "Error Sintáctico en la Línea %d, Columna %d: Token '%s' no reconocido. Tipo: %s",
+        "Se encontró un error de sintaxis en la línea %d en la Columna %d Token inesperado '%s'.",
             s.left, s.right, tokenValue, tokenName
         );
 
