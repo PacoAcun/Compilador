@@ -1,4 +1,3 @@
-
 package compiler.parser;
 
 import java_cup.runtime.*;
@@ -55,13 +54,13 @@ parser code {:
 :};
 
 /* Terminals (tokens retornados por el scanner) */
-terminal CLASS, INT, VOID, BOOLEAN, TRUE, FALSE, IF, ELSE, RETURN, WHILE, FOR, NEW;
+terminal CLASS, INT, VOID, BOOLEAN, CHAR, TRUE, FALSE, IF, ELSE, RETURN, WHILE, FOR, NEW, BREAK, CONTINUE, CALLOUT;
 terminal ASSIGN, EQ, NOT_EQUALS, SEMI, LBRACE, RBRACE, LPAREN, RPAREN, PLUS, MINUS, TIMES, DIVIDE, COMMA;
 terminal LESS_THAN, GREATER_THAN, LESS_THAN_EQUALS, GREATER_THAN_EQUALS, AND, OR, MOD, LBRACKET, RBRACKET;
+terminal PLUS_ASSIGN, MINUS_ASSIGN, TIMES_ASSIGN, DIVIDE_ASSIGN;
 terminal String ID;
-terminal Integer INT_LITERAL;
-terminal String STRING_LITERAL;
-terminal Character CHAR_LITERAL;
+terminal Integer INT_LITERAL, HEX_LITERAL;
+terminal String STRING_LITERAL, CHAR_LITERAL;
 
 /* Non-terminals */
 non terminal program, class_decl, method_decl, type;
@@ -69,7 +68,7 @@ non terminal statement, expr, param_list, arg_list;
 non terminal class_body_member_list, class_body_member, field_decl, block;
 non terminal block_item_list, block_item, decl, id_list, assignment;
 non terminal for_init, for_update, decl_assign;
-non terminal arg_list_non_empty, if_statement;
+non terminal arg_list_non_empty, if_statement, array_access;
 
 /* Precedencias */
 precedence left OR;
@@ -85,7 +84,7 @@ start with program;
 
 program ::= class_decl;
 
-class_decl ::= CLASS ID:name LBRACE class_body_member_list RBRACE;
+class_decl ::= CLASS ID LBRACE class_body_member_list RBRACE;
 
 class_body_member_list ::= class_body_member_list class_body_member
                          | /* empty */;
@@ -93,12 +92,13 @@ class_body_member_list ::= class_body_member_list class_body_member
 class_body_member ::= field_decl
                     | method_decl;
 
-field_decl ::= type id_list SEMI;
+field_decl ::= type id_list SEMI
+             | type LBRACKET INT_LITERAL RBRACKET ID SEMI; /* Manejo de arreglos */
 
-method_decl ::= type ID:name LPAREN param_list RPAREN block;
+method_decl ::= type ID LPAREN param_list RPAREN block;
 
-param_list ::= param_list COMMA type ID:name
-             | type ID:name
+param_list ::= param_list COMMA type ID
+             | type ID
              | /* empty */;
 
 block ::= LBRACE block_item_list RBRACE;
@@ -109,25 +109,35 @@ block_item_list ::= block_item_list block_item
 block_item ::= decl
              | statement;
 
-decl ::= type id_list SEMI;
+decl ::= type id_list SEMI
+       | type id_list ASSIGN expr SEMI; 
 
-decl_assign ::= type id_list ASSIGN expr;
+decl_assign ::= type ID ASSIGN expr;
 
-id_list ::= id_list COMMA ID:name
-          | ID:name;
+id_list ::= id_list COMMA ID
+          | ID;
 
 statement ::= assignment SEMI
             | if_statement
             | WHILE LPAREN expr RPAREN block
             | FOR LPAREN for_init SEMI expr SEMI for_update RPAREN block
             | RETURN expr SEMI
-            | expr SEMI         /* Permitir expresiones seguidas de ';' */
+            | BREAK SEMI
+            | CONTINUE SEMI
+            | expr SEMI        
             | block;
 
 if_statement ::= IF LPAREN expr RPAREN block
               | IF LPAREN expr RPAREN block ELSE block;
 
-assignment ::= ID:name ASSIGN expr;
+assignment ::= array_access ASSIGN expr  
+             | ID ASSIGN expr
+             | ID PLUS_ASSIGN expr
+             | ID MINUS_ASSIGN expr
+             | ID TIMES_ASSIGN expr
+             | ID DIVIDE_ASSIGN expr;
+
+array_access ::= ID LBRACKET expr RBRACKET;  /* Definición del acceso a elementos de arreglos */
 
 expr ::= expr PLUS expr
        | expr MINUS expr
@@ -142,16 +152,23 @@ expr ::= expr PLUS expr
        | expr NOT_EQUALS expr
        | expr AND expr
        | expr OR expr
-       | expr LBRACKET expr RBRACKET    /* Acceso a arreglos */
+       | array_access                   /* Incluir el acceso al arreglo en las expresiones */
        | NEW type LBRACKET expr RBRACKET  /* Creación de arreglos */
-       | ID:name
-       | INT_LITERAL:value
-       | STRING_LITERAL:value
-       | CHAR_LITERAL:value
-       | ID:name LPAREN arg_list RPAREN
+       | ID
+       | INT_LITERAL
+       | HEX_LITERAL
+       | STRING_LITERAL
+       | CHAR_LITERAL
+       | ID LPAREN arg_list RPAREN
+       | CALLOUT LPAREN STRING_LITERAL COMMA arg_list RPAREN
        | TRUE
        | FALSE
        | LPAREN expr RPAREN;
+
+for_init ::= decl_assign /* Cambiar aquí para que sólo acepte decl_assign o asignaciones directamente */
+           | assignment;
+
+for_update ::= assignment;
 
 arg_list ::= arg_list_non_empty
            | /* empty */;
@@ -159,12 +176,7 @@ arg_list ::= arg_list_non_empty
 arg_list_non_empty ::= arg_list_non_empty COMMA expr
                      | expr;
 
-type ::= type LBRACKET RBRACKET
-       | INT
+type ::= INT
        | VOID
-       | BOOLEAN;
-
-for_init ::= decl_assign
-           | assignment;
-
-for_update ::= assignment;
+       | BOOLEAN
+       | CHAR;  

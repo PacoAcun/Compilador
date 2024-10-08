@@ -1,23 +1,49 @@
-// Comentario de inicio del programa
+class ComplexProgram {
+    int counter;
+    boolean isComplete;
+    int[5] values;
+    char letter;
 
-class Program {
-  // Declaración de variables de instancia
-  int x; // variable entera
-  boolean y; // variable booleana
-  int[] z; // array de enteros
+    void initialize() {
+        counter = 0;
+        isComplete = false;
+        letter = 'A';
 
-  // Método principal del programa
-  void main() {
-    // Asignación de valores a variables
-    x = 5; // asignar 5 a x
-    y = true; // asignar true a y
-    z = new int[10]; // crear un array de 10 enteros
-
-    // Uso de condicionales (if-else)
-    if (x > 5) { // si x es mayor que 5
-      println("x es mayor que 5"); // imprimir mensaje
-    } else { // si no
-      println("x es menor o igual que 5"); // imprimir mensaje
+        for (int i = 0; i < 5; i += 1) {
+            values[i] = i * 2;
+        }
     }
-  }
+
+    int calculateSum() {
+        int sum = 0;
+        for (int i = 0; i < 5; i += 1) {
+            sum += values[i];
+        }
+        return sum;
+    }
+
+    void checkCompletion() {
+        if (calculateSum() > 10) {
+            isComplete = true;
+        } else {
+            callout("print", "Sum is 10 or less.");
+        }
+    }
+
+    void nestedLoop() {
+        for (int i = 0; i < 3; i += 1) {
+            for (int j = 0; j < 3; j += 1) {
+                values[i] = i + j;
+                if (values[i] % 2 == 0) {
+                    callout("print", "Even number detected.");
+                } else {
+                    callout("print", "Odd number detected.");
+                }
+            }
+        }
+    }
+
+    boolean isEven(int number) {
+        return number % 2 == 0;
+    }
 }

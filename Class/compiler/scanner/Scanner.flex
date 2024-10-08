@@ -15,10 +15,13 @@ import compiler.parser.sym;
 
 %{
   private Symbol symbol(int type) {
+    // Depuración para ver qué tokens están siendo encontrados
+    System.out.println("Token encontrado: " + sym.terminalNames[type] + ", valor: " + yytext());
     return new Symbol(type, yyline + 1, yycolumn + 1);
   }
   
   private Symbol symbol(int type, Object value) {
+    System.out.println("Token encontrado: " + sym.terminalNames[type] + ", valor: " + yytext());
     return new Symbol(type, yyline + 1, yycolumn + 1, value);
   }
 %}
@@ -31,6 +34,7 @@ import compiler.parser.sym;
 "int"        { return symbol(sym.INT, yytext()); }
 "void"       { return symbol(sym.VOID, yytext()); }
 "boolean"    { return symbol(sym.BOOLEAN, yytext()); }
+"char"       { return symbol(sym.CHAR, yytext()); }  // <-- Añadir esta línea
 "true"       { return symbol(sym.TRUE, yytext()); }
 "false"      { return symbol(sym.FALSE, yytext()); }
 "if"         { return symbol(sym.IF, yytext()); }
@@ -39,16 +43,23 @@ import compiler.parser.sym;
 "while"      { return symbol(sym.WHILE, yytext()); }
 "for"        { return symbol(sym.FOR, yytext()); }
 "new"        { return symbol(sym.NEW, yytext()); }
+"break"      { return symbol(sym.BREAK, yytext()); }
+"continue"   { return symbol(sym.CONTINUE, yytext()); }
+"callout"    { return symbol(sym.CALLOUT, yytext()); }
 
 /* Operadores y símbolos */
 "=="         { return symbol(sym.EQ, yytext()); }
 "!="         { return symbol(sym.NOT_EQUALS, yytext()); }
 "="          { return symbol(sym.ASSIGN, yytext()); }
+"+="         { return symbol(sym.PLUS_ASSIGN, yytext()); }
+"-="         { return symbol(sym.MINUS_ASSIGN, yytext()); }
+"*="         { return symbol(sym.TIMES_ASSIGN, yytext()); }
+"/="         { return symbol(sym.DIVIDE_ASSIGN, yytext()); }
 ";"          { return symbol(sym.SEMI, yytext()); }
-"{"          { return symbol(sym.LBRACE, "{"); }
-"}"          { return symbol(sym.RBRACE, "}"); }
-"("          { return symbol(sym.LPAREN, "("); }
-")"          { return symbol(sym.RPAREN, ")"); }
+"{"          { return symbol(sym.LBRACE, yytext()); }
+"}"          { return symbol(sym.RBRACE, yytext()); }
+"("          { return symbol(sym.LPAREN, yytext()); }
+")"          { return symbol(sym.RPAREN, yytext()); }
 "+"          { return symbol(sym.PLUS, yytext()); }
 "-"          { return symbol(sym.MINUS, yytext()); }
 "*"          { return symbol(sym.TIMES, yytext()); }
@@ -61,11 +72,12 @@ import compiler.parser.sym;
 "<"          { return symbol(sym.LESS_THAN, yytext()); }
 ">"          { return symbol(sym.GREATER_THAN, yytext()); }
 "%"          { return symbol(sym.MOD, yytext()); }
-"["          { return symbol(sym.LBRACKET, "["); }
-"]"          { return symbol(sym.RBRACKET, "]"); }
+"["          { return symbol(sym.LBRACKET, yytext()); }
+"]"          { return symbol(sym.RBRACKET, yytext()); }
 
 /* Literales numéricos */
 [0-9]+       { return symbol(sym.INT_LITERAL, Integer.parseInt(yytext())); }
+0[xX][0-9a-fA-F]+ { return symbol(sym.HEX_LITERAL, Integer.parseInt(yytext().substring(2), 16)); }
 
 /* Literales de carácter */
 \'([^\'\\]|\\.)\' { return symbol(sym.CHAR_LITERAL, yytext().charAt(1)); }
