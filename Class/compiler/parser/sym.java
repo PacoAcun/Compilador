@@ -8,105 +8,105 @@ package compiler.parser;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int DIVIDE = 29;
-  public static final int STRING_LITERAL = 47;
-  public static final int LBRACKET = 38;
-  public static final int CHAR = 6;
-  public static final int CHAR_LITERAL = 48;
-  public static final int PLUS_ASSIGN = 40;
-  public static final int LPAREN = 24;
-  public static final int SEMI = 21;
-  public static final int CONTINUE = 16;
-  public static final int INT = 3;
-  public static final int FOR = 13;
-  public static final int MINUS = 27;
-  public static final int GREATER_THAN = 32;
-  public static final int RPAREN = 25;
-  public static final int AND = 35;
-  public static final int CALLOUT = 17;
-  public static final int OR = 36;
-  public static final int COMMA = 30;
-  public static final int HEX_LITERAL = 46;
-  public static final int CLASS = 2;
-  public static final int PLUS = 26;
-  public static final int ASSIGN = 18;
-  public static final int IF = 9;
-  public static final int ID = 44;
+  public static final int DIVIDE = 26;
+  public static final int STRING_LITERAL = 46;
+  public static final int LBRACKET = 42;
+  public static final int CHAR = 10;
+  public static final int CHAR_LITERAL = 45;
+  public static final int GE = 33;
+  public static final int UMINUS = 48;
+  public static final int PLUS_ASSIGN = 21;
+  public static final int LPAREN = 40;
+  public static final int SEMI = 7;
+  public static final int CONTINUE = 18;
+  public static final int INT = 8;
+  public static final int FOR = 14;
+  public static final int MINUS = 24;
+  public static final int RPAREN = 41;
+  public static final int NOT = 36;
+  public static final int AND = 34;
+  public static final int LT = 30;
+  public static final int CALLOUT = 19;
+  public static final int OR = 35;
+  public static final int COMMA = 39;
+  public static final int CLASS = 3;
+  public static final int PLUS = 23;
+  public static final int ASSIGN = 20;
+  public static final int IF = 12;
+  public static final int ID = 4;
+  public static final int LE = 32;
   public static final int EOF = 0;
-  public static final int BOOLEAN = 5;
-  public static final int RETURN = 11;
-  public static final int RBRACKET = 39;
-  public static final int TRUE = 7;
-  public static final int NEW = 14;
+  public static final int BOOLEAN = 9;
+  public static final int RETURN = 16;
+  public static final int RBRACKET = 43;
+  public static final int TRUE = 37;
+  public static final int NEW = 47;
   public static final int error = 1;
-  public static final int MOD = 37;
-  public static final int BREAK = 15;
-  public static final int VOID = 4;
-  public static final int EQ = 19;
-  public static final int TIMES = 28;
-  public static final int TIMES_ASSIGN = 42;
-  public static final int LBRACE = 22;
-  public static final int ELSE = 10;
-  public static final int WHILE = 12;
-  public static final int DIVIDE_ASSIGN = 43;
-  public static final int NOT_EQUALS = 20;
-  public static final int RBRACE = 23;
-  public static final int FALSE = 8;
-  public static final int GREATER_THAN_EQUALS = 34;
-  public static final int LESS_THAN = 31;
-  public static final int LESS_THAN_EQUALS = 33;
-  public static final int MINUS_ASSIGN = 41;
-  public static final int INT_LITERAL = 45;
+  public static final int PROGRAM = 2;
+  public static final int MOD = 27;
+  public static final int NEQ = 29;
+  public static final int BREAK = 17;
+  public static final int VOID = 11;
+  public static final int EQ = 28;
+  public static final int TIMES = 25;
+  public static final int LBRACE = 5;
+  public static final int ELSE = 13;
+  public static final int WHILE = 15;
+  public static final int RBRACE = 6;
+  public static final int FALSE = 38;
+  public static final int GT = 31;
+  public static final int MINUS_ASSIGN = 22;
+  public static final int INT_LITERAL = 44;
   public static final String[] terminalNames = new String[] {
   "EOF",
   "error",
+  "PROGRAM",
   "CLASS",
+  "ID",
+  "LBRACE",
+  "RBRACE",
+  "SEMI",
   "INT",
-  "VOID",
   "BOOLEAN",
   "CHAR",
-  "TRUE",
-  "FALSE",
+  "VOID",
   "IF",
   "ELSE",
-  "RETURN",
-  "WHILE",
   "FOR",
-  "NEW",
+  "WHILE",
+  "RETURN",
   "BREAK",
   "CONTINUE",
   "CALLOUT",
   "ASSIGN",
-  "EQ",
-  "NOT_EQUALS",
-  "SEMI",
-  "LBRACE",
-  "RBRACE",
-  "LPAREN",
-  "RPAREN",
+  "PLUS_ASSIGN",
+  "MINUS_ASSIGN",
   "PLUS",
   "MINUS",
   "TIMES",
   "DIVIDE",
-  "COMMA",
-  "LESS_THAN",
-  "GREATER_THAN",
-  "LESS_THAN_EQUALS",
-  "GREATER_THAN_EQUALS",
+  "MOD",
+  "EQ",
+  "NEQ",
+  "LT",
+  "GT",
+  "LE",
+  "GE",
   "AND",
   "OR",
-  "MOD",
+  "NOT",
+  "TRUE",
+  "FALSE",
+  "COMMA",
+  "LPAREN",
+  "RPAREN",
   "LBRACKET",
   "RBRACKET",
-  "PLUS_ASSIGN",
-  "MINUS_ASSIGN",
-  "TIMES_ASSIGN",
-  "DIVIDE_ASSIGN",
-  "ID",
   "INT_LITERAL",
-  "HEX_LITERAL",
+  "CHAR_LITERAL",
   "STRING_LITERAL",
-  "CHAR_LITERAL"
+  "NEW",
+  "UMINUS"
   };
 }
 

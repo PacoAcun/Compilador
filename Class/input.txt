@@ -1,49 +1,42 @@
-class ComplexProgram {
-    int counter;
-    boolean isComplete;
-    int[5] values;
-    char letter;
+class SampleProgram {
+    int count;
+    boolean isReady;
+    char symbol;
 
-    void initialize() {
-        counter = 0;
-        isComplete = false;
-        letter = 'A';
+    void main() {
+        int i;
+        int total;
+        total = 0;
+        isReady = false;
+        symbol = 'S';
 
-        for (int i = 0; i < 5; i += 1) {
-            values[i] = i * 2;
+        for (i = 0; i < 10; i = i + 1) {
+            total = total + i;
+            if (total % 2 == 0) {
+                callout("print", "Even total:", total);
+            } else {
+                callout("print", "Odd total:", total);
+            }
         }
+
+        isReady = true;
+        callout("print", "Final total:", total);
     }
 
-    int calculateSum() {
-        int sum = 0;
-        for (int i = 0; i < 5; i += 1) {
-            sum += values[i];
+    int calculateSum(int limit) {
+        int sum;
+        int j;
+        sum = 0;
+        for (j = 1; j <= limit; j = j + 1) {
+            sum = sum + j;
         }
         return sum;
     }
 
-    void checkCompletion() {
-        if (calculateSum() > 10) {
-            isComplete = true;
-        } else {
-            callout("print", "Sum is 10 or less.");
+    void displayMessage(char messageChar, int repeatCount) {
+        int k;
+        for (k = 0; k < repeatCount; k = k + 1) {
+            callout("print_char", messageChar);
         }
-    }
-
-    void nestedLoop() {
-        for (int i = 0; i < 3; i += 1) {
-            for (int j = 0; j < 3; j += 1) {
-                values[i] = i + j;
-                if (values[i] % 2 == 0) {
-                    callout("print", "Even number detected.");
-                } else {
-                    callout("print", "Odd number detected.");
-                }
-            }
-        }
-    }
-
-    boolean isEven(int number) {
-        return number % 2 == 0;
     }
 }
