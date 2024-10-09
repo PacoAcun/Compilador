@@ -1,55 +1,41 @@
-class ComplexDecafProgram {
+class EducationalProgram {
     int numbers[];
-    int arraySize;  // Añadir una variable para almacenar el tamaño del array
-    boolean isActive;
-    char initial;
+    boolean flags[];
+    char letters[];
+    int size;
 
-    void initializeArray(int size) {
-        int i;
-        arraySize = size;  // Almacena el tamaño del array
+    void initialize(int arraySize) {
+        size = arraySize;
         numbers = new int[size];
-        for (i = 0; i < size; i = i + 1) {
+        flags = new boolean[size];
+        letters = new char[size];
+
+        for (int i = 0; i < size; i = i + 1) {
             numbers[i] = i * 2;
+            flags[i] = (i % 2 == 0);
+
+            if (i % 2 == 0) {
+                letters[i] = 'A';
+            } else {
+                letters[i] = 'B';
+            }
         }
     }
 
-    int calculateSum() {
+    int calculateSum(int limit) {
         int sum;
-        int i;
         sum = 0;
-        for (i = 0; i < arraySize; i = i + 1) {  // Usar arraySize en lugar de numbers.length
-            sum = sum + numbers[i];
+        for (int i = 1; i <= limit; i = i + 1) {
+            sum = sum + i;
         }
         return sum;
     }
 
-    void printResults() {
-        int i;
-        for (i = 0; i < arraySize; i = i + 1) {  // Usar arraySize en lugar de numbers.length
-            callout("print", "Number at index ", i, ": ", numbers[i]);
-        }
-        callout("print", "Sum of all numbers: ", calculateSum());
-    }
-
-    void main() {
-        initializeArray(10);
-        printResults();
-
-        if (calculateSum() > 50) {
-            isActive = true;
-            callout("print", "Sum is greater than 50, setting isActive to true.");
-        } else {
-            isActive = false;
-            callout("print", "Sum is less than or equal to 50, setting isActive to false.");
-        }
-    }
-
     boolean isPrime(int number) {
-        int i;
         if (number <= 1) {
             return false;
         }
-        for (i = 2; i * i <= number; i = i + 1) {
+        for (int i = 2; i < number; i = i + 1) {
             if (number % i == 0) {
                 return false;
             }
@@ -57,12 +43,44 @@ class ComplexDecafProgram {
         return true;
     }
 
-    void printPrimeNumbers() {
-        int i;
-        for (i = 0; i < arraySize; i = i + 1) {  // Usar arraySize en lugar de numbers.length
-            if (isPrime(numbers[i])) {
-                callout("print", "Prime number: ", numbers[i]);
+    void displayNumbers() {
+        for (int i = 0; i < size; i = i + 1) {
+            callout("print", numbers[i], " ");
+        }
+        callout("print", "\n");
+    }
+
+    int factorial(int num) {
+        int result;
+        result = 1;
+        for (int i = 1; i <= num; i = i + 1) {
+            result = result * i;
+        }
+        return result;
+    }
+
+    void generateFibonacci(int limit) {
+        int first;
+        int second;
+        int next;
+        first = 0;
+        second = 1;
+
+        for (int i = 0; i < limit; i = i + 1) {
+            callout("print", first, " ");
+            next = first + second;
+            first = second;
+            second = next;
+        }
+        callout("print", "\n");
+    }
+
+    boolean containsValue(int value) {
+        for (int i = 0; i < size; i = i + 1) {
+            if (numbers[i] == value) {
+                return true;
             }
         }
+        return false;
     }
 }

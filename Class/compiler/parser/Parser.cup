@@ -74,8 +74,7 @@ terminal CLASS, ID, LBRACE, RBRACE, SEMI, INT, BOOLEAN, CHAR, VOID,
 
 /* No terminales */
 non terminal program, class_body_member_list, class_body_member,
-             member_decl_rest, method_decl_rest, field_decl_rest,
-             field_decl_continuation, id_array_rest, id_with_optional_array,
+             method_decl_rest, id_with_optional_array,
              param_list, block, var_decl_list, var_decl, id_plus_array_list,
              statement_list, statement, expr_opt, assign_op, location,
              method_call, method_name, expr_plus_list_opt, expr_plus_list,
@@ -111,22 +110,8 @@ class_body_member ::= type id_with_optional_array assign_opt SEMI
                     | VOID ID method_decl_rest
                     | type id_with_optional_array method_decl_rest;
 
-/* Resto de la declaración de miembro */
-member_decl_rest ::= method_decl_rest
-                   | field_decl_rest;
-
 /* Declaración de método */
 method_decl_rest ::= LPAREN param_list RPAREN block;
-
-/* Declaración de campo */
-field_decl_rest ::= field_decl_continuation SEMI;
-
-/* Continuación de la declaración de campo */
-field_decl_continuation ::= id_array_rest;
-
-/* Resto de identificadores con arreglos (para múltiples declaraciones) */
-id_array_rest ::= COMMA id_with_optional_array id_array_rest
-                | /* vacío */;
 
 /* Identificador con arreglo opcional */
 id_with_optional_array ::= ID
