@@ -29,11 +29,18 @@ private void updatePosition() {
 
 /* Métodos para crear símbolos */
 private Symbol symbol(int type) {
+    debug("Token encontrado: " + sym.terminalNames[type] + " en línea " + (yyline + 1) + ", columna " + (yycolumn + 1));
     return new Symbol(type, yyline + 1, yycolumn + 1);
 }
 
 private Symbol symbol(int type, Object value) {
+    debug("Token encontrado: " + sym.terminalNames[type] + " con valor '" + value + "' en línea " + (yyline + 1) + ", columna " + (yycolumn + 1));
     return new Symbol(type, yyline + 1, yycolumn + 1, value);
+}
+
+/* Método para depuración */
+private void debug(String message) {
+    System.out.println("[DEBUG] " + message);
 }
 
 %}
@@ -79,7 +86,6 @@ STRING_LITERAL = \" ( [^\"\\\n] | \\ [btnfr0\'\"\\] )* \"
 
 /* Palabras reservadas */
 "class"             { updatePosition(); curr_column += yylength(); return symbol(sym.CLASS, yytext()); }
-"Program"           { updatePosition(); curr_column += yylength(); return symbol(sym.PROGRAM, yytext()); }
 "int"               { updatePosition(); curr_column += yylength(); return symbol(sym.INT, yytext()); }
 "boolean"           { updatePosition(); curr_column += yylength(); return symbol(sym.BOOLEAN, yytext()); }
 "void"              { updatePosition(); curr_column += yylength(); return symbol(sym.VOID, yytext()); }

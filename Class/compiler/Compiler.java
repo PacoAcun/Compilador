@@ -137,7 +137,6 @@ public class Compiler {
     // Lista actualizada de tokens que son palabras reservadas o símbolos
     switch (tokenSym) {
         case sym.CLASS:
-        case sym.PROGRAM:
         case sym.INT:
         case sym.BOOLEAN:
         case sym.VOID:

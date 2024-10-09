@@ -1,42 +1,68 @@
-class SampleProgram {
-    int count;
-    boolean isReady;
-    char symbol;
+class ComplexDecafProgram {
+    int numbers[];
+    int arraySize;  // Añadir una variable para almacenar el tamaño del array
+    boolean isActive;
+    char initial;
 
-    void main() {
+    void initializeArray(int size) {
         int i;
-        int total;
-        total = 0;
-        isReady = false;
-        symbol = 'S';
-
-        for (i = 0; i < 10; i = i + 1) {
-            total = total + i;
-            if (total % 2 == 0) {
-                callout("print", "Even total:", total);
-            } else {
-                callout("print", "Odd total:", total);
-            }
+        arraySize = size;  // Almacena el tamaño del array
+        numbers = new int[size];
+        for (i = 0; i < size; i = i + 1) {
+            numbers[i] = i * 2;
         }
-
-        isReady = true;
-        callout("print", "Final total:", total);
     }
 
-    int calculateSum(int limit) {
+    int calculateSum() {
         int sum;
-        int j;
+        int i;
         sum = 0;
-        for (j = 1; j <= limit; j = j + 1) {
-            sum = sum + j;
+        for (i = 0; i < arraySize; i = i + 1) {  // Usar arraySize en lugar de numbers.length
+            sum = sum + numbers[i];
         }
         return sum;
     }
 
-    void displayMessage(char messageChar, int repeatCount) {
-        int k;
-        for (k = 0; k < repeatCount; k = k + 1) {
-            callout("print_char", messageChar);
+    void printResults() {
+        int i;
+        for (i = 0; i < arraySize; i = i + 1) {  // Usar arraySize en lugar de numbers.length
+            callout("print", "Number at index ", i, ": ", numbers[i]);
+        }
+        callout("print", "Sum of all numbers: ", calculateSum());
+    }
+
+    void main() {
+        initializeArray(10);
+        printResults();
+
+        if (calculateSum() > 50) {
+            isActive = true;
+            callout("print", "Sum is greater than 50, setting isActive to true.");
+        } else {
+            isActive = false;
+            callout("print", "Sum is less than or equal to 50, setting isActive to false.");
+        }
+    }
+
+    boolean isPrime(int number) {
+        int i;
+        if (number <= 1) {
+            return false;
+        }
+        for (i = 2; i * i <= number; i = i + 1) {
+            if (number % i == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    void printPrimeNumbers() {
+        int i;
+        for (i = 0; i < arraySize; i = i + 1) {  // Usar arraySize en lugar de numbers.length
+            if (isPrime(numbers[i])) {
+                callout("print", "Prime number: ", numbers[i]);
+            }
         }
     }
 }

@@ -38,6 +38,13 @@ parser code {:
             s.left + 1, s.right + 1, tokenValue
         );
 
+        // Sugiere posibles causas para errores comunes
+        if (tokenValue.matches("\\d.*")) {
+            errorMessage += " Los identificadores no pueden comenzar con un dígito.";
+        } else if (s.sym == sym.INT_LITERAL || s.sym == sym.CHAR_LITERAL) {
+            errorMessage += " Se esperaba un operador o una expresión después del literal.";
+        }
+
         // Escribir en el archivo output.txt
         writeToFile(errorMessage);
 
@@ -58,7 +65,7 @@ parser code {:
 :};
 
 /* Terminales */
-terminal PROGRAM,CLASS, ID, LBRACE, RBRACE, SEMI, INT, BOOLEAN, CHAR, VOID,
+terminal CLASS, ID, LBRACE, RBRACE, SEMI, INT, BOOLEAN, CHAR, VOID,
          IF, ELSE, FOR, WHILE, RETURN, BREAK, CONTINUE, CALLOUT,
          ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, PLUS, MINUS, TIMES, DIVIDE,
          MOD, EQ, NEQ, LT, GT, LE, GE, AND, OR, NOT, TRUE, FALSE,
@@ -75,7 +82,7 @@ non terminal program, class_body_member_list, class_body_member,
              opt_comma_callout_arg_list, callout_arg_list, callout_arg,
              expr, assign_expr, bin_op, arith_op, rel_op, eq_op, cond_op, literal,
              int_literal, char_literal, bool_literal, type, for_init_expr,
-             for_update_expr;
+             for_update_expr, assign_opt;
 
 /* Precedencias */
 precedence left OR;
@@ -100,8 +107,9 @@ class_body_member_list ::= class_body_member_list class_body_member
                          | /* vacío */;
 
 /* Miembro del cuerpo de la clase */
-class_body_member ::= type id_with_optional_array member_decl_rest
-                    | VOID ID method_decl_rest;
+class_body_member ::= type id_with_optional_array assign_opt SEMI
+                    | VOID ID method_decl_rest
+                    | type id_with_optional_array method_decl_rest;
 
 /* Resto de la declaración de miembro */
 member_decl_rest ::= method_decl_rest
@@ -122,7 +130,7 @@ id_array_rest ::= COMMA id_with_optional_array id_array_rest
 
 /* Identificador con arreglo opcional */
 id_with_optional_array ::= ID
-                         | ID LBRACKET INT_LITERAL RBRACKET;
+                         | ID LBRACKET RBRACKET;
 
 /* Lista de parámetros */
 param_list ::= param_list COMMA type id_with_optional_array
@@ -136,8 +144,12 @@ block ::= LBRACE var_decl_list statement_list RBRACE;
 var_decl_list ::= var_decl_list var_decl
                 | /* vacío */;
 
-/* Declaración de variable local */
-var_decl ::= type id_plus_array_list SEMI;
+/* Declaración de variable local con asignación opcional */
+var_decl ::= type id_plus_array_list assign_opt SEMI;
+
+/* Asignación opcional para declaraciones de variables */
+assign_opt ::= ASSIGN expr
+             | /* vacío */;
 
 /* Lista de identificadores (variables locales) con arreglos opcionales */
 id_plus_array_list ::= id_plus_array_list COMMA id_with_optional_array
@@ -213,15 +225,14 @@ callout_arg ::= expr
               | STRING_LITERAL;
 
 /* Expresiones */
-expr ::=
-    location
-  | method_call
-  | literal
-  | expr bin_op expr
-  | MINUS expr %prec UMINUS
-  | NOT expr
-  | NEW type LBRACKET expr RBRACKET
-  | LPAREN expr RPAREN;
+expr ::= location
+       | method_call
+       | literal
+       | expr bin_op expr
+       | MINUS expr %prec UMINUS
+       | NOT expr
+       | NEW type LBRACKET expr RBRACKET
+       | LPAREN expr RPAREN;
 
 /* Operadores binarios */
 bin_op ::= arith_op
