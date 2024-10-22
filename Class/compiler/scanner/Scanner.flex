@@ -1,17 +1,19 @@
+/* Scanner.flex */
+
 package compiler.scanner;
 
 import java_cup.runtime.Symbol;
 import compiler.parser.sym;
+import compiler.ast.*;
 
 /* Declaración del scanner */
 %%
-
 %public
 %class Scanner
 %unicode
 %cup
 %function next_token
-%type Symbol
+%type java_cup.runtime.Symbol
 
 %{
 

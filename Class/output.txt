@@ -1,2 +1,28 @@
 stage: parsing
 Parsing completed successfully.
+AST:
+Program: MyClass
+  VarDecl: x Type: IntType
+  VarDecl: flag Type: BooleanType
+  MethodDecl: myMethod ReturnType: VoidType
+    Parameters:
+      Param: a Type: IntType
+      Param: b Type: BooleanType
+    Body:
+    Block:
+      VarDecls:
+      Statements:
+        IfStmt:
+          Condition:
+            VarLocation: b
+          Then Block:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: x
+                  Operator: =
+                  Expression:
+                    VarLocation: a
+

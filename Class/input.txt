@@ -1,86 +1,10 @@
-class EducationalProgram {
-    int numbers[];
-    boolean flags[];
-    char letters[];
-    int size;
+class MyClass {
+    int x;
+    boolean flag;
 
-    void initialize(int arraySize) {
-        size = arraySize;
-        numbers = new int[size];
-        flags = new boolean[size];
-        letters = new char[size];
-
-        for (int i = 0; i < size; i = i + 1) {
-            numbers[i] = i * 2;
-            flags[i] = (i % 2 == 0);
-
-            if (i % 2 == 0) {
-                letters[i] = 'A';
-            } else {
-                letters[i] = 'B';
-            }
+    void myMethod(int a, boolean b) {
+        if (b) {
+            x = a;
         }
-    }
-
-    int calculateSum(int limit) {
-        int sum;
-        sum = 0;
-        for (int i = 1; i <= limit; i = i + 1) {
-            sum = sum + i;
-        }
-        return sum;
-    }
-
-    boolean isPrime(int number) {
-        if (number <= 1) {
-            return false;
-        }
-        for (int i = 2; i < number; i = i + 1) {
-            if (number % i == 0) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    void displayNumbers() {
-        for (int i = 0; i < size; i = i + 1) {
-            callout("print", numbers[i], " ");
-        }
-        callout("print", "\n");
-    }
-
-    int factorial(int num) {
-        int result;
-        result = 1;
-        for (int i = 1; i <= num; i = i + 1) {
-            result = result * i;
-        }
-        return result;
-    }
-
-    void generateFibonacci(int limit) {
-        int first;
-        int second;
-        int next;
-        first = 0;
-        second = 1;
-
-        for (int i = 0; i < limit; i = i + 1) {
-            callout("print", first, " ");
-            next = first + second;
-            first = second;
-            second = next;
-        }
-        callout("print", "\n");
-    }
-
-    boolean containsValue(int value) {
-        for (int i = 0; i < size; i = i + 1) {
-            if (numbers[i] == value) {
-                return true;
-            }
-        }
-        return false;
     }
 }
