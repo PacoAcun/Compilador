@@ -5,6 +5,7 @@ public interface ASTVisitor {
     void visit(Program program);
     void visit(VarDecl varDecl);
     void visit(MethodDecl methodDecl);
+    void visit(MultiVarDecl multiVarDecl);
     void visit(Block block);
     void visit(Param param);
 

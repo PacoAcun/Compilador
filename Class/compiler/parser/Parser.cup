@@ -93,8 +93,14 @@ class_body_member_list ::= class_body_member_list:cbml class_body_member:cbm
                             {: RESULT = new ArrayList<>(); :}
                           ;
 
-class_body_member ::= type:t id_with_optional_array:var assign_opt:aopt SEMI
-                        {: RESULT = new VarDecl(t, var.getName(), var.isArray(), aopt); :}
+class_body_member ::= type:t id_plus_array_list:vars SEMI
+                        {: 
+                            List<ClassBodyMember> members = new ArrayList<>();
+                            for (Variable var : vars) {
+                                members.add(new VarDecl(t, var.getName(), var.isArray(), null));
+                            }
+                            RESULT = new MultiVarDecl(members);
+                        :}
                      | VOID ID:id LPAREN param_list:params RPAREN block:b
                         {: RESULT = new MethodDecl(new VoidType(), (String)id, params, b); :}
                      | type:t ID:id LPAREN param_list:params RPAREN block:b

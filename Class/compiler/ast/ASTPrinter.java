@@ -382,4 +382,11 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(StringArg stringArg) {
         println("StringArg: \"" + stringArg.getValue() + "\"");
     }
+
+    @Override
+    public void visit(MultiVarDecl multiVarDecl) {
+        for (ClassBodyMember decl : multiVarDecl.getDeclarations()) {
+            decl.accept(this);
+        }
+    }
 }
