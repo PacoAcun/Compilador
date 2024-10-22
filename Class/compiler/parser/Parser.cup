@@ -394,8 +394,8 @@ literal ::= int_literal:i
          ;
 
 int_literal ::= INT_LITERAL:i
-               {: RESULT = new IntLiteral(Integer.parseInt(i.toString())); :}
-             ;
+    {: RESULT = new IntLiteral(i); :}
+    ;
 
 char_literal ::= CHAR_LITERAL:c
                 {: RESULT = new CharLiteral(((String)c).charAt(0)); :}

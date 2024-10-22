@@ -110,10 +110,10 @@ public class Scanner implements java_cup.runtime.Scanner {
     "\1\25\1\1\1\26\1\2\1\3\2\2\1\27\1\2"+
     "\1\30\1\0\1\31\1\0\1\32\2\0\1\33\1\34"+
     "\1\35\1\2\1\0\1\36\1\37\1\40\11\22\1\41"+
-    "\6\22\1\42\1\2\1\43\1\2\1\44\1\15\10\22"+
-    "\1\45\1\46\1\47\7\22\1\50\2\22\1\51\2\22"+
-    "\1\52\1\53\2\22\1\54\1\22\1\55\1\22\1\56"+
-    "\1\22\1\57\3\22\1\60\1\61\1\62\1\22\1\63";
+    "\6\22\1\42\1\2\1\43\1\2\1\44\1\45\10\22"+
+    "\1\46\1\47\1\50\7\22\1\51\2\22\1\52\2\22"+
+    "\1\53\1\54\2\22\1\55\1\22\1\56\1\22\1\57"+
+    "\1\22\1\60\3\22\1\61\1\62\1\63\1\22\1\64";
 
   private static int [] zzUnpackAction() {
     int [] result = new int[126];
@@ -797,257 +797,264 @@ private void debug(String message) {
     curr_column += yylength();
             }
           // fall through
-          case 52: break;
+          case 53: break;
           case 2:
             { curr_column += yylength();
             }
           // fall through
-          case 53: break;
+          case 54: break;
           case 3:
             { curr_line++; curr_column = 1;
             }
           // fall through
-          case 54: break;
+          case 55: break;
           case 4:
             { updatePosition(); curr_column += yylength(); return symbol(sym.NOT, yytext());
             }
           // fall through
-          case 55: break;
+          case 56: break;
           case 5:
             { updatePosition(); curr_column += yylength(); return symbol(sym.MOD, yytext());
             }
           // fall through
-          case 56: break;
+          case 57: break;
           case 6:
             { updatePosition(); curr_column += yylength(); return symbol(sym.LPAREN, yytext());
             }
           // fall through
-          case 57: break;
+          case 58: break;
           case 7:
             { updatePosition(); curr_column += yylength(); return symbol(sym.RPAREN, yytext());
             }
           // fall through
-          case 58: break;
+          case 59: break;
           case 8:
             { updatePosition(); curr_column += yylength(); return symbol(sym.TIMES, yytext());
             }
           // fall through
-          case 59: break;
+          case 60: break;
           case 9:
             { updatePosition(); curr_column += yylength(); return symbol(sym.PLUS, yytext());
             }
           // fall through
-          case 60: break;
+          case 61: break;
           case 10:
             { updatePosition(); curr_column += yylength(); return symbol(sym.COMMA, yytext());
             }
           // fall through
-          case 61: break;
+          case 62: break;
           case 11:
             { updatePosition(); curr_column += yylength(); return symbol(sym.MINUS, yytext());
             }
           // fall through
-          case 62: break;
+          case 63: break;
           case 12:
             { updatePosition(); curr_column += yylength(); return symbol(sym.DIVIDE, yytext());
             }
           // fall through
-          case 63: break;
+          case 64: break;
           case 13:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.INT_LITERAL, yytext());
+            { updatePosition(); 
+    curr_column += yylength(); 
+    return symbol(sym.INT_LITERAL, Integer.parseInt(yytext()));
             }
           // fall through
-          case 64: break;
+          case 65: break;
           case 14:
             { updatePosition(); curr_column += yylength(); return symbol(sym.SEMI, yytext());
             }
           // fall through
-          case 65: break;
+          case 66: break;
           case 15:
             { updatePosition(); curr_column += yylength(); return symbol(sym.LT, yytext());
             }
           // fall through
-          case 66: break;
+          case 67: break;
           case 16:
             { updatePosition(); curr_column += yylength(); return symbol(sym.ASSIGN, yytext());
             }
           // fall through
-          case 67: break;
+          case 68: break;
           case 17:
             { updatePosition(); curr_column += yylength(); return symbol(sym.GT, yytext());
             }
           // fall through
-          case 68: break;
+          case 69: break;
           case 18:
             { updatePosition(); curr_column += yylength(); return symbol(sym.ID, yytext());
             }
           // fall through
-          case 69: break;
+          case 70: break;
           case 19:
             { updatePosition(); curr_column += yylength(); return symbol(sym.LBRACKET, yytext());
             }
           // fall through
-          case 70: break;
+          case 71: break;
           case 20:
             { updatePosition(); curr_column += yylength(); return symbol(sym.RBRACKET, yytext());
             }
           // fall through
-          case 71: break;
+          case 72: break;
           case 21:
             { updatePosition(); curr_column += yylength(); return symbol(sym.LBRACE, yytext());
             }
           // fall through
-          case 72: break;
+          case 73: break;
           case 22:
             { updatePosition(); curr_column += yylength(); return symbol(sym.RBRACE, yytext());
             }
           // fall through
-          case 73: break;
+          case 74: break;
           case 23:
             { curr_column += 1;
             }
           // fall through
-          case 74: break;
+          case 75: break;
           case 24:
             { updatePosition(); curr_column += yylength(); return symbol(sym.NEQ, yytext());
             }
           // fall through
-          case 75: break;
+          case 76: break;
           case 25:
             { updatePosition(); curr_column += yylength(); return symbol(sym.STRING_LITERAL, yytext());
             }
           // fall through
-          case 76: break;
+          case 77: break;
           case 26:
             { updatePosition(); curr_column += yylength(); return symbol(sym.AND, yytext());
             }
           // fall through
-          case 77: break;
+          case 78: break;
           case 27:
             { updatePosition(); curr_column += yylength(); return symbol(sym.PLUS_ASSIGN, yytext());
             }
           // fall through
-          case 78: break;
+          case 79: break;
           case 28:
             { updatePosition(); curr_column += yylength(); return symbol(sym.MINUS_ASSIGN, yytext());
             }
           // fall through
-          case 79: break;
+          case 80: break;
           case 29:
             { curr_column += 2; yybegin(COMMENT);
             }
           // fall through
-          case 80: break;
+          case 81: break;
           case 30:
             { updatePosition(); curr_column += yylength(); return symbol(sym.LE, yytext());
             }
           // fall through
-          case 81: break;
+          case 82: break;
           case 31:
             { updatePosition(); curr_column += yylength(); return symbol(sym.EQ, yytext());
             }
           // fall through
-          case 82: break;
+          case 83: break;
           case 32:
             { updatePosition(); curr_column += yylength(); return symbol(sym.GE, yytext());
             }
           // fall through
-          case 83: break;
+          case 84: break;
           case 33:
             { updatePosition(); curr_column += yylength(); return symbol(sym.IF, yytext());
             }
           // fall through
-          case 84: break;
+          case 85: break;
           case 34:
             { updatePosition(); curr_column += yylength(); return symbol(sym.OR, yytext());
             }
           // fall through
-          case 85: break;
+          case 86: break;
           case 35:
             { curr_column += 2; yybegin(YYINITIAL);
             }
           // fall through
-          case 86: break;
+          case 87: break;
           case 36:
             { updatePosition(); curr_column += yylength(); return symbol(sym.CHAR_LITERAL, yytext());
             }
           // fall through
-          case 87: break;
-          case 37:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.FOR, yytext());
-            }
-          // fall through
           case 88: break;
-          case 38:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.INT, yytext());
+          case 37:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.INT_LITERAL, yytext());
             }
           // fall through
           case 89: break;
-          case 39:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.NEW, yytext());
+          case 38:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.FOR, yytext());
             }
           // fall through
           case 90: break;
-          case 40:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.CHAR, yytext());
+          case 39:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.INT, yytext());
             }
           // fall through
           case 91: break;
-          case 41:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.ELSE, yytext());
+          case 40:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.NEW, yytext());
             }
           // fall through
           case 92: break;
-          case 42:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.TRUE, yytext());
+          case 41:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.CHAR, yytext());
             }
           // fall through
           case 93: break;
-          case 43:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.VOID, yytext());
+          case 42:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.ELSE, yytext());
             }
           // fall through
           case 94: break;
-          case 44:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.BREAK, yytext());
+          case 43:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.TRUE, yytext());
             }
           // fall through
           case 95: break;
-          case 45:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.CLASS, yytext());
+          case 44:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.VOID, yytext());
             }
           // fall through
           case 96: break;
-          case 46:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.FALSE, yytext());
+          case 45:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.BREAK, yytext());
             }
           // fall through
           case 97: break;
-          case 47:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.WHILE, yytext());
+          case 46:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.CLASS, yytext());
             }
           // fall through
           case 98: break;
-          case 48:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.RETURN, yytext());
+          case 47:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.FALSE, yytext());
             }
           // fall through
           case 99: break;
-          case 49:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.BOOLEAN, yytext());
+          case 48:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.WHILE, yytext());
             }
           // fall through
           case 100: break;
-          case 50:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.CALLOUT, yytext());
+          case 49:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.RETURN, yytext());
             }
           // fall through
           case 101: break;
-          case 51:
-            { updatePosition(); curr_column += yylength(); return symbol(sym.CONTINUE, yytext());
+          case 50:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.BOOLEAN, yytext());
             }
           // fall through
           case 102: break;
+          case 51:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.CALLOUT, yytext());
+            }
+          // fall through
+          case 103: break;
+          case 52:
+            { updatePosition(); curr_column += yylength(); return symbol(sym.CONTINUE, yytext());
+            }
+          // fall through
+          case 104: break;
           default:
             zzScanError(ZZ_NO_MATCH);
         }

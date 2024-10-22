@@ -137,7 +137,11 @@ STRING_LITERAL = \" ( [^\"\\\n] | \\ [btnfr0\'\"\\] )* \"
 
 {HEX_LITERAL}       { updatePosition(); curr_column += yylength(); return symbol(sym.INT_LITERAL, yytext()); }
 
-{INT_LITERAL}       { updatePosition(); curr_column += yylength(); return symbol(sym.INT_LITERAL, yytext()); }
+{INT_LITERAL}  { 
+    updatePosition(); 
+    curr_column += yylength(); 
+    return symbol(sym.INT_LITERAL, Integer.parseInt(yytext())); 
+}
 
 {CHAR_LITERAL}      { updatePosition(); curr_column += yylength(); return symbol(sym.CHAR_LITERAL, yytext()); }
 
