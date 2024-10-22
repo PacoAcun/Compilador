@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09e7d7bb-0c39-4db4-8f1f-606b82907696" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/Class/bin/compiler/parser/Parser$CUP$Parser$actions.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/bin/compiler/parser/Parser$CUP$Parser$actions.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/bin/compiler/parser/Parser.class" beforeDir="false" afterPath="$PROJECT_DIR$/Class/bin/compiler/parser/Parser.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/compiler/parser/Parser.cup" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/parser/Parser.cup" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/compiler/parser/Parser.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/parser/Parser.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/compiler/ast/AST.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Class/compiler/ast/ASTDotGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/Compiler.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/Compiler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Class/compiler/ast/Param.java" beforeDir="false" afterPath="$PROJECT_DIR$/Class/compiler/ast/Param.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Class/input.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Class/input.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Class/output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Class/output.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,26 +32,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;com.codeium.enabled&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Paco/Documents/Github/Compilador&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "com.codeium.enabled": "true",
+    "git-widget-placeholder": "Master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Paco/Documents/Github/Compilador",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+        <option value="bundled-jdk-9823dce3aa75-28b599e66164-intellij.indexing.shared.core-IU-242.22855.74" />
+        <option value="bundled-js-predefined-d6986cc7102b-5c90d61e3bab-JavaScript-IU-242.22855.74" />
       </set>
     </attachedChunks>
   </component>
@@ -69,6 +71,8 @@
       <workItem from="1728018500860" duration="8400000" />
       <workItem from="1728047188371" duration="668000" />
       <workItem from="1728233257733" duration="11338000" />
+      <workItem from="1729613888761" duration="2809000" />
+      <workItem from="1729618573196" duration="681000" />
     </task>
     <servers />
   </component>

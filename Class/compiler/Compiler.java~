@@ -73,9 +73,6 @@ public class Compiler {
                 case "parse":
                     runParse(filename, output, debug);
                     break;
-                case "dot":
-                    runDot(filename, output, debug);
-                    break;
                 default:
                     System.err.println("Objetivo desconocido: " + target);
                     printHelp();
