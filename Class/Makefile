@@ -58,3 +58,7 @@ ejecutar-escaneo:
 # Ejecuta el análisis de parsing y guarda el resultado en output.txt
 ejecutar-parsing:
 	java -cp bin:compiler/lib/java-cup-11b.jar:. compiler.Compiler -target parse input.txt -o output.txt
+	java -cp bin:compiler/lib/java-cup-11b.jar:. compiler.Compiler -target dot input.txt -o output.dot
+
+generar-dot:
+	dot -Tpdf output.dot -o output.pdf
