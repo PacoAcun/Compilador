@@ -8,6 +8,9 @@ import compiler.ast.ASTPrinter;
 import java_cup.runtime.Symbol;
 import compiler.ast.ASTDotGenerator;
 
+import java.io.File;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -97,6 +100,7 @@ public class Compiler {
      * @throws IOException Si ocurre un error de E/S.
      */
     private static void runParse(String filename, String output, boolean debug) throws IOException {
+        // Crear el archivo de salida para el parsing normal
         try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
             // Indicar el inicio de la etapa de parsing
             writer.println("stage: parsing");
@@ -134,6 +138,70 @@ public class Compiler {
             // Traversar el AST y generar la representación
             program.accept(printer);
             writer.println(); // Añadir una línea en blanco al final
+
+            // Generar el archivo DOT
+            String dotFile = output.substring(0, output.lastIndexOf('.')) + ".dot";
+            try (PrintWriter dotWriter = new PrintWriter(new FileWriter(dotFile))) {
+                ASTDotGenerator dotGenerator = new ASTDotGenerator(dotWriter);
+                dotGenerator.beginGraph();
+                program.accept(dotGenerator);
+                dotGenerator.endGraph();
+                System.out.println("Archivo DOT generado exitosamente en " + dotFile);
+
+                // Generar PDF automáticamente
+                String pdfFile = dotFile.replaceAll("\\.dot$", "") + ".pdf";
+                try {
+                    // Usar la ruta relativa al proyecto
+                    String dotPath = "compiler/lib/graphviz/bin/dot.exe";
+                    File dotExe = new File(dotPath);
+
+                    if (!dotExe.exists()) {
+                        System.err.println("No se encontró dot.exe en: " + dotExe.getAbsolutePath());
+                        return;
+                    }
+
+                    // Crear el ProcessBuilder con la ruta relativa
+                    ProcessBuilder pb = new ProcessBuilder(
+                            dotExe.getAbsolutePath(),
+                            "-Tpdf",
+                            dotFile,
+                            "-o",
+                            pdfFile
+                    );
+
+                    // Redirigir el error estándar al output estándar
+                    pb.redirectErrorStream(true);
+
+                    // Ejecutar el proceso
+                    Process process = pb.start();
+
+                    // Esperar a que termine el proceso
+                    int exitCode = process.waitFor();
+
+                    if (exitCode == 0) {
+                        System.out.println("PDF generado exitosamente en " + pdfFile);
+                    } else {
+                        // Leer la salida del proceso para obtener más detalles del error
+                        try (BufferedReader reader = new BufferedReader(
+                                new InputStreamReader(process.getInputStream()))) {
+                            String line;
+                            StringBuilder error = new StringBuilder();
+                            while ((line = reader.readLine()) != null) {
+                                error.append(line).append("\n");
+                            }
+                            System.err.println("Error generando PDF. Código de salida: " + exitCode);
+                            if (debug) {
+                                System.err.println("Detalles del error:\n" + error.toString());
+                            }
+                        }
+                    }
+                } catch (IOException | InterruptedException e) {
+                    System.err.println("Error generando PDF: " + e.getMessage());
+                    if (debug) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
             if (debug) {
                 System.out.println("Debug: AST generado correctamente en " + output);
