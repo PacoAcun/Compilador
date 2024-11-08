@@ -29,7 +29,6 @@ public class ASTPrinter implements ASTVisitor {
     @Override
     public void visit(Program program) {
         println("Program: " + program.className);
-        System.out.println("Visiting Program");
         indent();
         for (ClassBodyMember member : program.classBody) {
             member.accept(this);
@@ -39,7 +38,7 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(VarDecl varDecl) {
-        println("VarDecl: " + varDecl.name + " Type: " + varDecl.type.getClass().getSimpleName() + (varDecl.isArray ? "[]" : ""));
+        println("VarDecl: " + varDecl.name + " Type: " + varDecl.type.toString() + (varDecl.isArray ? "[]" : ""));
         if (varDecl.initExpr != null) {
             indent();
             println("InitExpr:");
@@ -52,12 +51,12 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(MethodDecl methodDecl) {
-        println("MethodDecl: " + methodDecl.name + " ReturnType: " + methodDecl.returnType.getClass().getSimpleName());
+        println("MethodDecl: " + methodDecl.name + " ReturnType: " + methodDecl.returnType.toString());
         indent();
         println("Parameters:");
         indent();
         for (Param param : methodDecl.params) {
-            println("Param: " + param.name + " Type: " + param.type.getClass().getSimpleName() + (param.isArray ? "[]" : ""));
+            println("Param: " + param.name + " Type: " + param.type.toString() + (param.isArray ? "[]" : ""));
         }
         unindent();
         println("Body:");
@@ -118,7 +117,7 @@ public class ASTPrinter implements ASTVisitor {
         unindent();
         println("Then Block:");
         indent();
-        if (ifStmt.getThenBlock() != null) { // Corrección aquí: Añadido 'if ('
+        if (ifStmt.getThenBlock() != null) { // Añadido 'if'
             ifStmt.getThenBlock().accept(this);
         } else {
             println("None");
@@ -367,7 +366,7 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(Param param) {
-        println("Param: " + param.name + " Type: " + param.type.getClass().getSimpleName() + (param.isArray ? "[]" : ""));
+        println("Param: " + param.name + " Type: " + param.type.toString() + (param.isArray ? "[]" : ""));
     }
 
     @Override
@@ -388,5 +387,11 @@ public class ASTPrinter implements ASTVisitor {
         for (ClassBodyMember decl : multiVarDecl.getDeclarations()) {
             decl.accept(this);
         }
+    }
+
+    // Implementación de visit(ArrayType)
+    @Override
+    public void visit(ArrayType arrayType) {
+        println("ArrayType: " + arrayType.toString());
     }
 }

@@ -1,7 +1,6 @@
 package compiler.ast;
 
 import java.util.List;
-import java.util.ArrayList;
 
 public class MethodCall extends Expression {
     protected String methodName;
@@ -12,10 +11,12 @@ public class MethodCall extends Expression {
         this.arguments = arguments;
     }
 
+    // Getter para methodName
     public String getMethodName() {
         return methodName;
     }
 
+    // Getter para arguments
     public List<Expression> getArguments() {
         return arguments;
     }

@@ -6,7 +6,11 @@ public class Param implements AST {
     public boolean isArray;
 
     public Param(Type type, String name, boolean isArray) {
-        this.type = type;
+        if (isArray) {
+            this.type = new ArrayType(type);
+        } else {
+            this.type = type;
+        }
         this.name = name;
         this.isArray = isArray;
     }

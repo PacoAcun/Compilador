@@ -7,7 +7,11 @@ public class VarDecl implements ClassBodyMember {
     public Expression initExpr;
 
     public VarDecl(Type type, String name, boolean isArray, Expression initExpr) {
-        this.type = type;
+        if (isArray) {
+            this.type = new ArrayType(type);
+        } else {
+            this.type = type;
+        }
         this.name = name;
         this.isArray = isArray;
         this.initExpr = initExpr;

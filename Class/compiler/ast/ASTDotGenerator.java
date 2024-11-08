@@ -57,7 +57,7 @@ public class ASTDotGenerator implements ASTVisitor {
     @Override
     public void visit(VarDecl varDecl) {
         String arrayStr = varDecl.isArray ? "[]" : "";
-        createNode(varDecl, "VarDecl\n" + varDecl.name + ": " + varDecl.type.getClass().getSimpleName() + arrayStr);
+        createNode(varDecl, "VarDecl\n" + varDecl.name + ": " + varDecl.type.toString() + arrayStr);
         if (varDecl.initExpr != null) {
             createEdge(varDecl, varDecl.initExpr);
             varDecl.initExpr.accept(this);
@@ -66,7 +66,7 @@ public class ASTDotGenerator implements ASTVisitor {
 
     @Override
     public void visit(MethodDecl methodDecl) {
-        createNode(methodDecl, "MethodDecl\n" + methodDecl.name + "\n" + methodDecl.returnType.getClass().getSimpleName());
+        createNode(methodDecl, "MethodDecl\n" + methodDecl.name + "\n" + methodDecl.returnType.toString());
 
         for (Param param : methodDecl.params) {
             createEdge(methodDecl, param);
@@ -304,7 +304,7 @@ public class ASTDotGenerator implements ASTVisitor {
     @Override
     public void visit(Param param) {
         String arrayStr = param.isArray ? "[]" : "";
-        createNode(param, "Param\n" + param.name + ": " + param.type.getClass().getSimpleName() + arrayStr);
+        createNode(param, "Param\n" + param.name + ": " + param.type.toString() + arrayStr);
     }
 
     @Override
@@ -326,5 +326,11 @@ public class ASTDotGenerator implements ASTVisitor {
             createEdge(multiVarDecl, decl);
             decl.accept(this);
         }
+    }
+
+    // Implementación de visit(ArrayType)
+    @Override
+    public void visit(ArrayType arrayType) {
+        createNode(arrayType, "ArrayType\n" + arrayType.getElementType().toString() + "[]");
     }
 }

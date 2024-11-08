@@ -1,4 +1,3 @@
-// En compiler/ast/NewArrayExpr.java
 package compiler.ast;
 
 public class NewArrayExpr extends Expression {

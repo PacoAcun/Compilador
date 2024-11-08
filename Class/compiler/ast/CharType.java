@@ -5,4 +5,14 @@ public class CharType extends Type {
     public void accept(ASTVisitor visitor) {
         visitor.visit(this);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof CharType;
+    }
+
+    @Override
+    public String toString() {
+        return "char";
+    }
 }

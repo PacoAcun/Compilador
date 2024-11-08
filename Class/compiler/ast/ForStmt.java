@@ -13,21 +13,10 @@ public class ForStmt extends Statement {
         this.body = body;
     }
 
-    public Statement getInit() {
-        return init;
-    }
-
-    public Expression getCondition() {
-        return condition;
-    }
-
-    public Statement getUpdate() {
-        return update;
-    }
-
-    public Statement getBody() {
-        return body;
-    }
+    public Statement getInit() { return init; }
+    public Expression getCondition() { return condition; }
+    public Statement getUpdate() { return update; }
+    public Statement getBody() { return body; }
 
     @Override
     public void accept(ASTVisitor visitor) {

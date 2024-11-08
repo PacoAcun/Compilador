@@ -22,7 +22,6 @@ public interface ASTVisitor {
     void visit(VarDeclStmt varDeclStmt);
     void visit(CalloutStmt calloutStmt);
 
-
     // Expresiones
     void visit(AssignExpr assignExpr);
     void visit(BinaryExpr binaryExpr);
@@ -50,4 +49,5 @@ public interface ASTVisitor {
     void visit(BooleanType booleanType);
     void visit(CharType charType);
     void visit(VoidType voidType);
+    void visit(ArrayType arrayType);
 }
