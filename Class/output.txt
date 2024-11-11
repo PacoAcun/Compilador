@@ -1,18 +1,68 @@
 stage: parsing
 Parsing completed successfully.
-Errores semánticos encontrados:
-El tamaño del arreglo debe ser un entero mayor que 0.
-Tipos incompatibles en asignación: int[] y int.
-El tamaño del arreglo debe ser un entero mayor que 0.
-Tipos incompatibles en asignación: boolean[] y boolean.
-El tamaño del arreglo debe ser un entero mayor que 0.
-Tipos incompatibles en asignación: char[] y char.
-Tipos incompatibles en asignación: boolean y null.
-La condición del 'if' debe ser de tipo boolean.
-La condición del 'if' debe ser de tipo boolean.
-La condición del 'if' debe ser de tipo boolean.
-Método '"print"' no está declarado.
-Método '"print"' no está declarado.
-Método '"print"' no está declarado.
-Método '"print"' no está declarado.
-El programa debe contener un método 'main' sin parámetros.
+AST:
+Program: CorrectProgram
+  VarDecl: x Type: int
+  VarDecl: y Type: int
+  VarDecl: arr Type: int[][]
+  MethodDecl: main ReturnType: void
+    Parameters:
+    Body:
+    Block:
+      VarDecls:
+      Statements:
+        AssignStmt:
+          Location:
+            VarLocation: x
+          Operator: =
+          Expression:
+            IntLiteral: 5
+        AssignStmt:
+          Location:
+            VarLocation: y
+          Operator: =
+          Expression:
+            IntLiteral: 10
+        AssignStmt:
+          Location:
+            VarLocation: arr
+          Operator: =
+          Expression:
+            NewArrayExpr:
+              Type:
+                ArrayType: int[]
+              Size:
+                IntLiteral: 5
+        AssignStmt:
+          Location:
+            ArrayLocation: arr
+              Index:
+                IntLiteral: 0
+          Operator: =
+          Expression:
+            BinaryExpr: +
+              Left:
+                VarLocation: x
+              Right:
+                VarLocation: y
+        MethodCallStmt:
+          MethodCall: print
+            Arguments:
+              ArrayLocation: arr
+                Index:
+                  IntLiteral: 0
+  MethodDecl: sum ReturnType: int
+    Parameters:
+      Param: a Type: int
+      Param: b Type: int
+    Body:
+    Block:
+      VarDecls:
+      Statements:
+        ReturnStmt:
+          BinaryExpr: +
+            Left:
+              VarLocation: a
+            Right:
+              VarLocation: b
+

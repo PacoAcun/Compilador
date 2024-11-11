@@ -310,12 +310,12 @@ public class ASTPrinter implements ASTVisitor {
 
     @Override
     public void visit(IntLiteral intLiteral) {
-        println("IntLiteral: " + intLiteral.value);
+        println("IntLiteral: " + intLiteral.getValue());
     }
 
     @Override
     public void visit(BoolLiteral boolLiteral) {
-        println("BoolLiteral: " + boolLiteral.value);
+        println("BoolLiteral: " + boolLiteral.getValue());
     }
 
     @Override
@@ -394,4 +394,19 @@ public class ASTPrinter implements ASTVisitor {
     public void visit(ArrayType arrayType) {
         println("ArrayType: " + arrayType.toString());
     }
+
+    @Override
+    public void visit(StringType stringType) {
+        // Implementa cómo se imprimirá StringType
+        // Por ejemplo:
+        System.out.println("Tipo: String");
+    }
+
+    @Override
+    public void visit(NullType nullType) {
+        // Implementa cómo se imprimirá NullType
+        System.out.println("Tipo: null");
+    }
+    
+
 }

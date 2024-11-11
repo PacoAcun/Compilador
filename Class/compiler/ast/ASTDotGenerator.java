@@ -251,12 +251,12 @@ public class ASTDotGenerator implements ASTVisitor {
 
     @Override
     public void visit(IntLiteral intLiteral) {
-        createNode(intLiteral, "IntLiteral\n" + intLiteral.value);
+        createNode(intLiteral, "IntLiteral\n" + intLiteral.getValue());
     }
 
     @Override
     public void visit(BoolLiteral boolLiteral) {
-        createNode(boolLiteral, "BoolLiteral\n" + boolLiteral.value);
+        createNode(boolLiteral, "BoolLiteral\n" + boolLiteral.getValue());
     }
 
     @Override
@@ -328,9 +328,24 @@ public class ASTDotGenerator implements ASTVisitor {
         }
     }
 
+    @Override
+    public void visit(StringType stringType) {
+        // Implementa cómo se representará StringType en el gráfico DOT
+        // Por ejemplo:
+        System.out.println("\"StringType\" [label=\"String\"];");
+    }
+
+    @Override
+    public void visit(NullType nullType) {
+        // Implementa cómo se representará NullType en el gráfico DOT
+        System.out.println("\"NullType\" [label=\"null\"];");
+    }
+
     // Implementación de visit(ArrayType)
     @Override
     public void visit(ArrayType arrayType) {
         createNode(arrayType, "ArrayType\n" + arrayType.getElementType().toString() + "[]");
     }
+
+    
 }

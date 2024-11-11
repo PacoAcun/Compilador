@@ -147,18 +147,13 @@ public class Compiler {
                 }
                 // Terminar si hay errores semánticos
                 return;
-            } else {
-                writer.println("Análisis semántico completado sin errores.");
-                if (debug) {
-                    System.out.println("Debug: Análisis semántico completado sin errores.");
-                }
-            }
+            } 
 
             // Indicar el inicio de la impresión del AST
             writer.println("AST:");
             ASTPrinter printer = new ASTPrinter(writer);
 
-            // Traversar el AST y generar la representación
+            // Recorrer el AST y generar la representación
             program.accept(printer);
             writer.println(); // Añadir una línea en blanco al final
 
@@ -174,23 +169,8 @@ public class Compiler {
                 // Generar PDF automáticamente
                 String pdfFile = dotFile.replaceAll("\\.dot$", "") + ".pdf";
                 try {
-                    // Usar la ruta relativa al proyecto
-                    String dotPath = "compiler/lib/graphviz/bin/dot.exe"; // Ajusta la ruta según tu sistema
-                    File dotExe = new File(dotPath);
-
-                    if (!dotExe.exists()) {
-                        System.err.println("No se encontró dot.exe en: " + dotExe.getAbsolutePath());
-                        return;
-                    }
-
-                    // Crear el ProcessBuilder con la ruta relativa
-                    ProcessBuilder pb = new ProcessBuilder(
-                            dotExe.getAbsolutePath(),
-                            "-Tpdf",
-                            dotFile,
-                            "-o",
-                            pdfFile
-                    );
+                    // Usar el comando 'dot' del sistema
+                    ProcessBuilder pb = new ProcessBuilder("dot", "-Tpdf", dotFile, "-o", pdfFile);
 
                     // Redirigir el error estándar al output estándar
                     pb.redirectErrorStream(true);
@@ -294,7 +274,7 @@ public class Compiler {
         String dotFile = output;
         String pdfFile = output.replaceAll("\\.dot$", "") + ".pdf";
 
-        try (PrintWriter writer = new PrintWriter(new FileWriter(dotFile))) {
+        try {
             // Inicializar Scanner y Parser
             Scanner scanner = new Scanner(new FileReader(filename));
             Parser parser = new Parser(scanner);
@@ -311,82 +291,79 @@ public class Compiler {
 
                 List<String> semanticErrors = semanticAnalyzer.getErrors();
                 if (!semanticErrors.isEmpty()) {
-                    writer.println("Errores semánticos encontrados:");
                     System.err.println("Errores semánticos encontrados:");
                     for (String error : semanticErrors) {
-                        writer.println(error);
                         System.err.println(error);
                     }
                     // Terminar si hay errores semánticos
                     return;
                 } else {
-                    writer.println("Análisis semántico completado sin errores.");
                     if (debug) {
                         System.out.println("Debug: Análisis semántico completado sin errores.");
                     }
                 }
 
-                // Crear el generador DOT
-                ASTDotGenerator dotGenerator = new ASTDotGenerator(writer);
+                // Crear el generador DOT y escribir únicamente la sintaxis DOT
+                try (PrintWriter writer = new PrintWriter(new FileWriter(dotFile))) {
+                    ASTDotGenerator dotGenerator = new ASTDotGenerator(writer);
 
-                // Generar el archivo DOT
-                dotGenerator.beginGraph();
-                program.accept(dotGenerator);
-                dotGenerator.endGraph();
+                    // Generar el archivo DOT
+                    dotGenerator.beginGraph();
+                    program.accept(dotGenerator);
+                    dotGenerator.endGraph();
+                }
 
-                System.out.println("Archivo DOT generado exitosamente en " + dotFile);
+                // Obtener rutas absolutas para facilitar la localización
+                File dotFileObj = new File(dotFile);
+                File pdfFileObj = new File(pdfFile);
+                String dotFilePath = dotFileObj.getAbsolutePath();
+                String pdfFilePath = pdfFileObj.getAbsolutePath();
+
+                System.out.println("Archivo DOT generado exitosamente en " + dotFilePath);
 
                 // Generar PDF automáticamente
                 try {
-                    // Usar la ruta relativa al proyecto
-                    String dotPath = "compiler/lib/graphviz/bin/dot.exe"; // Ajusta la ruta según tu sistema
-                    File dotExe = new File(dotPath);
-
-                    if (!dotExe.exists()) {
-                        System.err.println("No se encontró dot.exe en: " + dotExe.getAbsolutePath());
-                        return;
-                    }
-
-                    // Crear el ProcessBuilder con la ruta relativa
-                    ProcessBuilder pb = new ProcessBuilder(
-                            dotExe.getAbsolutePath(),
-                            "-Tpdf",
-                            dotFile,
-                            "-o",
-                            pdfFile
-                    );
+                    // Usar el comando 'dot' del sistema
+                    ProcessBuilder pb = new ProcessBuilder("dot", "-Tpdf", dotFilePath, "-o", pdfFilePath);
 
                     // Redirigir el error estándar al output estándar
                     pb.redirectErrorStream(true);
 
+                    // Imprimir información de depuración
+                    if (debug) {
+                        System.out.println("Ejecutando comando: dot -Tpdf " + dotFilePath + " -o " + pdfFilePath);
+                    }
+
                     // Ejecutar el proceso
                     Process process = pb.start();
+
+                    // Leer la salida del proceso
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                    String line;
+                    StringBuilder outputBuilder = new StringBuilder();
+                    while ((line = reader.readLine()) != null) {
+                        outputBuilder.append(line).append("\n");
+                    }
 
                     // Esperar a que termine el proceso
                     int exitCode = process.waitFor();
 
                     if (exitCode == 0) {
-                        System.out.println("PDF generado exitosamente en " + pdfFile);
+                        System.out.println("PDF generado exitosamente en " + pdfFilePath);
                     } else {
-                        // Leer la salida del proceso para obtener más detalles del error
-                        try (BufferedReader reader = new BufferedReader(
-                                new InputStreamReader(process.getInputStream()))) {
-                            String line;
-                            StringBuilder error = new StringBuilder();
-                            while ((line = reader.readLine()) != null) {
-                                error.append(line).append("\n");
-                            }
-                            System.err.println("Error generando PDF. Código de salida: " + exitCode);
-                            if (debug) {
-                                System.err.println("Detalles del error:\n" + error.toString());
-                            }
-                        }
+                        System.err.println("Error generando PDF. Código de salida: " + exitCode);
+                        System.err.println("Salida del comando 'dot':\n" + outputBuilder.toString());
                     }
                 } catch (IOException | InterruptedException e) {
                     System.err.println("Error generando PDF: " + e.getMessage());
                     if (debug) {
                         e.printStackTrace();
                     }
+                }
+            } else {
+                System.err.println("Error: No se pudo generar el AST.");
+                if (debug) {
+                    System.err.println("Error: No se pudo generar el AST.");
                 }
             }
         } catch (Exception e) {
@@ -396,6 +373,7 @@ public class Compiler {
             }
         }
     }
+
 
     /**
      * Método para determinar si un token es una palabra reservada.
@@ -481,20 +459,5 @@ public class Compiler {
         System.out.println("-target <stage>: scan, parse, dot.");
         System.out.println("-debug: Activa el modo debug.");
         System.out.println("-h: Muestra esta ayuda.");
-    }
-
-    /**
-     * Método para generar el archivo DOT y PDF.
-     *
-     * @param dotFile Ruta del archivo DOT.
-     * @param pdfFile Ruta del archivo PDF.
-     */
-    private static void generatePDF(String dotFile, String pdfFile) throws IOException, InterruptedException {
-        ProcessBuilder pb = new ProcessBuilder("dot", "-Tpdf", dotFile, "-o", pdfFile);
-        Process process = pb.start();
-        int exitCode = process.waitFor();
-        if (exitCode != 0) {
-            throw new IOException("Error generando PDF. Código de salida: " + exitCode);
-        }
     }
 }

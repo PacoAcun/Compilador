@@ -8,10 +8,11 @@ public class Symbol {
     public enum SymbolType { VARIABLE, METHOD }
 
     private String name;
-    private Type type; // Usar las clases Type del AST
+    private Type type;
     private SymbolType symbolType;
-    private List<Type> parameterTypes; // Para métodos
+    private List<Type> parameterTypes;
 
+    // Constructor para variables y métodos sin parámetros
     public Symbol(String name, Type type, SymbolType symbolType) {
         this.name = name;
         this.type = type;
@@ -19,13 +20,33 @@ public class Symbol {
         this.parameterTypes = new ArrayList<>();
     }
 
-    // Getters y setters
-    public String getName() { return name; }
-    public Type getType() { return type; }
-    public SymbolType getSymbolType() { return symbolType; }
-    public List<Type> getParameterTypes() { return parameterTypes; }
+    // Constructor para métodos con parámetros
+    public Symbol(String name, Type type, SymbolType symbolType, List<Type> parameterTypes) {
+        this.name = name;
+        this.type = type;
+        this.symbolType = symbolType;
+        this.parameterTypes = parameterTypes;
+    }
+
+    // Métodos getters y setters
+
+    public String getName() {
+        return name;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public SymbolType getSymbolType() {
+        return symbolType;
+    }
+
+    public List<Type> getParameterTypes() {
+        return parameterTypes;
+    }
 
     public void addParameterType(Type type) {
-        parameterTypes.add(type);
+        this.parameterTypes.add(type);
     }
 }

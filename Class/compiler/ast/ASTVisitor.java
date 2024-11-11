@@ -29,6 +29,7 @@ public interface ASTVisitor {
     void visit(MethodCall methodCall);
     void visit(CalloutCall calloutCall);
     void visit(NewArrayExpr newArrayExpr);
+    
 
     // Argumentos de callout
     void visit(ExprArg exprArg);
@@ -48,6 +49,10 @@ public interface ASTVisitor {
     void visit(IntType intType);
     void visit(BooleanType booleanType);
     void visit(CharType charType);
-    void visit(VoidType voidType);
+    void visit(VoidType voidType); 
     void visit(ArrayType arrayType);
+    void visit(StringType stringType);
+    void visit(NullType nullType);
+
+
 }

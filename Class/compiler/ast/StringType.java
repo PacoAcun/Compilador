@@ -1,17 +1,17 @@
 package compiler.ast;
 
 /**
- * Representa el tipo Void para métodos que no retornan valor.
+ * Representa el tipo String en el lenguaje.
  */
-public class VoidType extends Type {
+public class StringType extends Type {
     @Override
     public boolean equals(Object obj) {
-        return obj instanceof VoidType;
+        return obj instanceof StringType;
     }
 
     @Override
     public String toString() {
-        return "void";
+        return "String";
     }
 
     @Override
