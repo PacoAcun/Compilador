@@ -1,17 +1,102 @@
-class CorrectProgram {
+class Program {
+    /* Variables globales */
     int x;
     int y;
-    int arr[]; // Declaración de arreglo sin tamaño
-
+    boolean flag;
+    int numbers[];
+    boolean flags[];
+    
     void main() {
-        x = 5;
-        y = 10;
-        arr = new int[5]; // Asignación de tamaño al arreglo
-        arr[0] = x + y;
-        print(arr[0]);
+        /* Inicialización de variables */
+        x = 10;
+        y = 20;
+        flag = true;
+        
+        /* Arrays */
+        numbers = new int[5];
+        flags = new boolean[3];
+        
+        /* Operaciones aritméticas correctas */
+        x = y + 1;
+        y = x * 2;
+        
+        /* Operaciones lógicas correctas */
+        flag = true && false;
+        flag = !flag;
+        
+        /* Operaciones de arrays */
+        numbers[0] = 1;
+        numbers[x - 10] = 2;
+        flags[0] = true;
+        
+        /* Condiciones correctas */
+        if (flag) {
+            x = 1;
+        }
+        
+        if (x == y) {
+            flag = false;
+        }
+        
+        if (flags[0] && flag) {
+            y = 2;
+        }
+        
+        /* Loops correctos */
+        for (int i = 0; i < 5; i = i + 1) {
+            numbers[i] = i * 2;
+            if (i == 3) {
+                break; // This break statement is correctly inside the loop
+            }
+            if (i < 2) {
+                continue; // This continue statement is also correctly inside the loop
+            }
+            flags[0] = true;
+        }
+        
+        /* Llamadas a métodos */
+        calculateSum(10);
+        performOperations(x, flag);
+        flag = checkCondition(x, y);
+        
+        return;  /* Correcto para método void */
     }
-
-    int sum(int a, int b) {
-        return a + b;
+    
+    int calculateSum(int limit) {
+        int sum;
+        sum = 0;
+        
+        for (int i = 0; i < limit; i = i + 1) {
+            sum = sum + i;
+        }
+        
+        return sum;  /* Retorno correcto de int */
+    }
+    
+    void performOperations(int value, boolean condition) {
+        if (condition) {
+            value = value * 2;
+        }
+        
+        return;  /* Retorno correcto para void */
+    }
+    
+    boolean checkCondition(int a, int b) {
+        boolean result;
+        
+        if (a > b) {
+            result = true;
+        } else {
+            result = false;
+        }
+        
+        return result;  /* Retorno correcto de boolean */
+    }
+    
+    int factorial(int n) {
+        if (n <= 1) {
+            return 1;
+        }
+        return n * factorial(n - 1);  /* Llamada recursiva correcta */
     }
 }
