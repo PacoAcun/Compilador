@@ -208,6 +208,37 @@ public class SemanticAnalyzer implements ASTVisitor {
     }
 
     @Override
+    public void visit(FieldDecl fieldDecl) {
+    Type type = fieldDecl.type;
+    String name = fieldDecl.name;
+
+    Symbol symbol = new Symbol(name, type, Symbol.SymbolType.VARIABLE);
+
+    if (!symbolTable.declare(symbol)) {
+        reportError("El campo '" + name + "' ya está declarado en este scope.");
+    }
+
+    // Si el campo tiene una expresión de inicialización
+    if (fieldDecl.initExpr != null) {
+        fieldDecl.initExpr.accept(this);
+        Type initType = getExpressionType(fieldDecl.initExpr);
+        if (initType != null && !typesAreCompatible(type, initType)) {
+            reportError("Tipo de la expresión de inicialización para '" + name + 
+                      "' no coincide con el tipo declarado. Se esperaba " + type + 
+                      " pero se encontró " + initType + ".");
+        }
+    }
+}
+    @Override
+    public void visit(ClassDecl classDecl) {
+        // Si necesitas manejar múltiples clases, ajusta esta lógica según tus necesidades.
+        // En muchos casos, puedes simplemente recorrer los miembros de la clase.
+        for (ClassBodyMember member : classDecl.body) {
+            member.accept(this);
+        }
+    }
+
+    @Override
     public void visit(AssignStmt assignStmt) {
         assignStmt.location.accept(this);
         assignStmt.expr.accept(this);
@@ -321,7 +352,6 @@ public class SemanticAnalyzer implements ASTVisitor {
         inLoop = previousInLoop;
         loopDepth--;  // Decrementar al salir
     }
-
    
     @Override
     public void visit(WhileStmt whileStmt) {
@@ -378,6 +408,7 @@ public class SemanticAnalyzer implements ASTVisitor {
             reportError("La sentencia 'break' debe estar dentro de un ciclo.");
         }
     }
+    
 
     @Override
     public void visit(ContinueStmt continueStmt) {

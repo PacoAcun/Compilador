@@ -8,6 +8,9 @@ import compiler.ast.ASTPrinter;
 import compiler.ast.ASTDotGenerator;
 import compiler.semantic.SemanticAnalyzer; 
 import java_cup.runtime.Symbol;
+import compiler.irt.IRTreeGenerator;
+import compiler.irt.BasicBlock;
+import compiler.irt.IRResult;
 
 import java.io.File;
 import java.io.BufferedReader;
@@ -28,17 +31,17 @@ public class Compiler {
 
         String filename = "";
         String output = "output.txt";
-        String target = "codegen"; // Por defecto
+        String target = "codegen"; // Default target
         boolean debug = false;
 
-        // Procesamiento de argumentos
+        // Process arguments
         for (int i = 0; i < args.length; i++) {
             switch (args[i]) {
                 case "-o":
                     if (i + 1 < args.length) {
                         output = args[++i];
                     } else {
-                        System.err.println("Error: Se espera un nombre de archivo después de -o.");
+                        System.err.println("Error: Expected filename after -o.");
                         printHelp();
                         System.exit(1);
                     }
@@ -47,7 +50,7 @@ public class Compiler {
                     if (i + 1 < args.length) {
                         target = args[++i];
                     } else {
-                        System.err.println("Error: Se espera un objetivo después de -target.");
+                        System.err.println("Error: Expected target after -target.");
                         printHelp();
                         System.exit(1);
                     }
@@ -65,7 +68,7 @@ public class Compiler {
         }
 
         if (filename.isEmpty()) {
-            System.err.println("Error: No se especificó un archivo de entrada.");
+            System.err.println("Error: No input file specified.");
             printHelp();
             System.exit(1);
         }
@@ -81,12 +84,15 @@ public class Compiler {
                 case "dot":
                     runDot(filename, output, debug);
                     break;
+                case "ir":  // New case for IR
+                    runIR(filename, output, debug);
+                    break;
                 default:
-                    System.err.println("Objetivo desconocido: " + target);
+                    System.err.println("Unknown target: " + target);
                     printHelp();
             }
         } catch (IOException e) {
-            System.err.println("Error al procesar el archivo: " + e.getMessage());
+            System.err.println("Error processing file: " + e.getMessage());
             if (debug) {
                 e.printStackTrace();
             }
@@ -450,14 +456,99 @@ public class Compiler {
         return "UNKNOWN";
     }
 
+    // Añade el nuevo método runIR:
+    private static void runIR(String filename, String output, boolean debug) throws IOException {
+        try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
+            // Indicate the start of the IR generation stage
+            writer.println("stage: IR generation");
+            System.out.println("stage: IR generation");
+
+            // Initialize Scanner and Parser
+            Scanner scanner = new Scanner(new FileReader(filename));
+            Parser parser = new Parser(scanner);
+
+            // Perform parsing
+            Symbol result = parser.parse();
+
+            if (result == null || result.value == null) {
+                writer.println("Error: Could not generate AST.");
+                return;
+            }
+
+            // Get the AST
+            Program program = (Program) result.value;
+
+            // Perform semantic analysis
+            SemanticAnalyzer semanticAnalyzer = new SemanticAnalyzer();
+            program.accept(semanticAnalyzer);
+
+            List<String> semanticErrors = semanticAnalyzer.getErrors();
+            if (!semanticErrors.isEmpty()) {
+                writer.println("Semantic errors found:");
+                for (String error : semanticErrors) {
+                    writer.println(error);
+                }
+                return;
+            }
+
+            // Generate IR
+            IRTreeGenerator irGenerator = new IRTreeGenerator();
+            IRResult irResult = irGenerator.generateAndOptimize(program);
+
+            if (irResult.errors.isEmpty()) {
+                // Print the generated IR
+                writer.println("\nGenerated Intermediate Representation:");
+                if (irResult.ir != null) {
+                    writer.println(irResult.ir.toString());
+                } else {
+                    writer.println("Error: The generated IR is null.");
+                }
+
+                // Show optimizations if any
+                writer.println("\nOptimizations performed:");
+                if (irResult.cfg != null && irResult.cfg.blocks != null) {
+                    writer.println("- Número de bloques básicos: " + irResult.cfg.blocks.size());
+                } else {
+                    writer.println("- No se generó el CFG o no tiene bloques básicos.");
+                }
+
+
+                if (debug) {
+                    // Print additional debug information
+                    writer.println("\nDebug Information:");
+                    writer.println("- Basic blocks and their connections");
+                    if (irResult.cfg != null) {
+                        for (BasicBlock block : irResult.cfg.blocks) {
+                            writer.println("  Block: " + block.label);
+                            writer.println("  Predecessors: " + block.predecessors.size());
+                            writer.println("  Successors: " + block.successors.size());
+                            writer.println();
+                        }
+                    }
+                }
+            } else {
+                writer.println("Errors during IR generation:");
+                for (String error : irResult.errors) {
+                    writer.println(error);
+                }
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error during IR generation: " + e.getMessage());
+            if (debug) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     /**
      * Método para imprimir la ayuda y uso del compilador.
      */
     private static void printHelp() {
-        System.out.println("Uso: java compiler.Compiler [option] <filename>");
-        System.out.println("-o <outname>: Especifica el nombre del archivo de salida.");
-        System.out.println("-target <stage>: scan, parse, dot.");
-        System.out.println("-debug: Activa el modo debug.");
-        System.out.println("-h: Muestra esta ayuda.");
+        System.out.println("Usage: java compiler.Compiler [option] <filename>");
+        System.out.println("-o <outname>: Specifies the output filename.");
+        System.out.println("-target <stage>: scan, parse, dot, ir.");
+        System.out.println("-debug: Enables debug mode.");
+        System.out.println("-h: Shows this help message.");
     }
 }

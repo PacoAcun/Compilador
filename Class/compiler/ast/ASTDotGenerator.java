@@ -199,6 +199,24 @@ public class ASTDotGenerator implements ASTVisitor {
         assignExpr.getExpression().accept(this);
     }
 
+    
+
+    @Override
+    public void visit(FieldDecl fieldDecl) {
+        createNode(fieldDecl, "FieldDecl\n" + fieldDecl.name + ": " + fieldDecl.type.toString());
+        // Si necesitas agregar más lógica, hazlo aquí
+    }
+
+    @Override
+    public void visit(ClassDecl classDecl) {
+        createNode(classDecl, "ClassDecl\n" + classDecl.name);
+        for (ClassBodyMember member : classDecl.body) {
+            createEdge(classDecl, member);
+            member.accept(this);
+        }
+    }
+
+
     @Override
     public void visit(MethodCall methodCall) {
         createNode(methodCall, "MethodCall\n" + methodCall.getMethodName());

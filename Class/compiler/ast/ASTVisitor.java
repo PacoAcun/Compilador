@@ -4,6 +4,8 @@ public interface ASTVisitor {
     // Clases principales
     void visit(Program program);
     void visit(VarDecl varDecl);
+    void visit(ClassDecl classDecl); 
+    void visit(FieldDecl fieldDecl);
     void visit(MethodDecl methodDecl);
     void visit(MultiVarDecl multiVarDecl);
     void visit(Block block);

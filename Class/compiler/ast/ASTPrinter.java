@@ -37,6 +37,22 @@ public class ASTPrinter implements ASTVisitor {
     }
 
     @Override
+    public void visit(FieldDecl fieldDecl) {
+        println("FieldDecl: " + fieldDecl.name + " Type: " + fieldDecl.type.toString());
+        // Si necesitas imprimir más detalles, hazlo aquí
+    }
+
+    @Override
+    public void visit(ClassDecl classDecl) {
+        println("ClassDecl: " + classDecl.name);
+        indent();
+        for (ClassBodyMember member : classDecl.body) {
+            member.accept(this);
+        }
+        unindent();
+    }
+
+    @Override
     public void visit(VarDecl varDecl) {
         println("VarDecl: " + varDecl.name + " Type: " + varDecl.type.toString() + (varDecl.isArray ? "[]" : ""));
         if (varDecl.initExpr != null) {

@@ -1,0 +1,126 @@
+stage: IR generation
+
+Generated Intermediate Representation:
+LABEL main
+LABEL main_prologue
+MOVE TEMP x, CONST 10
+MOVE TEMP y, CONST 20
+MOVE TEMP flag, CONST 1
+MOVE TEMP t_main_0, CALL NAME malloc(BINOP(MUL, CONST 5, CONST 4))
+MOVE TEMP numbers, TEMP t_main_0
+MOVE TEMP t_main_1, CALL NAME malloc(BINOP(MUL, CONST 3, CONST 4))
+MOVE TEMP flags, TEMP t_main_1
+MOVE TEMP x, BINOP(PLUS, TEMP y, CONST 1)
+MOVE TEMP y, BINOP(MUL, TEMP x, CONST 2)
+MOVE TEMP flag, BINOP(AND, CONST 1, CONST 0)
+MOVE TEMP flag, BINOP(XOR, TEMP flag, CONST 1)
+MOVE MEM[BINOP(PLUS, TEMP numbers, BINOP(MUL, CONST 0, CONST 4))], CONST 1
+MOVE MEM[BINOP(PLUS, TEMP numbers, BINOP(MUL, BINOP(MINUS, TEMP x, CONST 10), CONST 4))], CONST 2
+MOVE MEM[BINOP(PLUS, TEMP flags, BINOP(MUL, CONST 0, CONST 4))], CONST 1
+CJUMP(NE, TEMP flag, CONST 0, if_true_0, if_false_0)
+LABEL if_true_0
+MOVE TEMP x, CONST 1
+JUMP NAME if_end_0
+LABEL if_false_0
+LABEL if_end_0
+CJUMP(NE, BINOP(EQ, TEMP x, TEMP y), CONST 0, if_true_1, if_false_1)
+LABEL if_true_1
+MOVE TEMP flag, CONST 0
+JUMP NAME if_end_1
+LABEL if_false_1
+LABEL if_end_1
+CJUMP(NE, BINOP(AND, MEM[BINOP(PLUS, TEMP flags, BINOP(MUL, CONST 0, CONST 4))], TEMP flag), CONST 0, if_true_2, if_false_2)
+LABEL if_true_2
+MOVE TEMP y, CONST 2
+JUMP NAME if_end_2
+LABEL if_false_2
+LABEL if_end_2
+LABEL for_init_0
+MOVE TEMP i, CONST 0
+LABEL for_test_0
+CJUMP(NE, BINOP(LT, TEMP i, CONST 5), CONST 0, for_body_0, for_end_0)
+LABEL for_body_0
+MOVE MEM[BINOP(PLUS, TEMP numbers, BINOP(MUL, TEMP i, CONST 4))], BINOP(MUL, TEMP i, CONST 2)
+CJUMP(NE, BINOP(EQ, TEMP i, CONST 3), CONST 0, if_true_3, if_false_3)
+LABEL if_true_3
+JUMP NAME for_end_0
+JUMP NAME if_end_3
+LABEL if_false_3
+LABEL if_end_3
+CJUMP(NE, BINOP(LT, TEMP i, CONST 2), CONST 0, if_true_4, if_false_4)
+LABEL if_true_4
+JUMP NAME for_test_0
+JUMP NAME if_end_4
+LABEL if_false_4
+LABEL if_end_4
+MOVE MEM[BINOP(PLUS, TEMP flags, BINOP(MUL, CONST 0, CONST 4))], CONST 1
+LABEL for_update_0
+MOVE TEMP i, BINOP(PLUS, TEMP i, CONST 1)
+EXPR TEMP i
+JUMP NAME for_test_0
+LABEL for_end_0
+MOVE TEMP t_main_2, CALL NAME calculateSum(CONST 10)
+MOVE TEMP t_main_3, CALL NAME performOperations(TEMP x, TEMP flag)
+MOVE TEMP flag, CALL NAME checkCondition(TEMP x, TEMP y)
+JUMP NAME main_end
+LABEL main_end
+RETURN
+LABEL calculateSum
+LABEL calculateSum_prologue
+MOVE TEMP sum, CONST 0
+LABEL for_init_1
+MOVE TEMP i, CONST 0
+LABEL for_test_1
+CJUMP(NE, BINOP(LT, TEMP i, TEMP limit), CONST 0, for_body_1, for_end_1)
+LABEL for_body_1
+MOVE TEMP sum, BINOP(PLUS, TEMP sum, TEMP i)
+LABEL for_update_1
+MOVE TEMP i, BINOP(PLUS, TEMP i, CONST 1)
+EXPR TEMP i
+JUMP NAME for_test_1
+LABEL for_end_1
+MOVE TEMP return, TEMP sum
+JUMP NAME calculateSum_end
+LABEL calculateSum_end
+RETURN
+LABEL performOperations
+LABEL performOperations_prologue
+CJUMP(NE, TEMP condition, CONST 0, if_true_5, if_false_5)
+LABEL if_true_5
+MOVE TEMP value, BINOP(MUL, TEMP value, CONST 2)
+JUMP NAME if_end_5
+LABEL if_false_5
+LABEL if_end_5
+JUMP NAME performOperations_end
+LABEL performOperations_end
+RETURN
+LABEL checkCondition
+LABEL checkCondition_prologue
+CJUMP(NE, BINOP(GT, TEMP a, TEMP b), CONST 0, if_true_6, if_false_6)
+LABEL if_true_6
+MOVE TEMP result, CONST 1
+JUMP NAME if_end_6
+LABEL if_false_6
+MOVE TEMP result, CONST 0
+LABEL if_end_6
+MOVE TEMP return, TEMP result
+JUMP NAME checkCondition_end
+LABEL checkCondition_end
+RETURN
+LABEL factorial
+LABEL factorial_prologue
+CJUMP(NE, BINOP(LE, TEMP n, CONST 1), CONST 0, if_true_7, if_false_7)
+LABEL if_true_7
+MOVE TEMP return, CONST 1
+JUMP NAME factorial_end
+JUMP NAME if_end_7
+LABEL if_false_7
+LABEL if_end_7
+MOVE TEMP return, BINOP(MUL, TEMP n, CALL NAME factorial(BINOP(MINUS, TEMP n, CONST 1)))
+JUMP NAME factorial_end
+LABEL factorial_end
+RETURN
+
+
+Optimizations performed:
+- Número de bloques básicos: 53
