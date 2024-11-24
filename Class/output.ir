@@ -1,6 +1,4 @@
 stage: IR generation
-
-Generated Intermediate Representation:
 LABEL main
 LABEL main_prologue
 MOVE TEMP x, CONST 10
@@ -121,6 +119,3 @@ JUMP NAME factorial_end
 LABEL factorial_end
 RETURN
 
-
-Optimizations performed:
-- Número de bloques básicos: 53

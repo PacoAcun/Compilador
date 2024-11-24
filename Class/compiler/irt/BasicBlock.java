@@ -20,4 +20,6 @@ public class BasicBlock {
     public void addInstruction(IRStmt stmt) {
         this.instructions.add(stmt);
     }
+
+    
 }

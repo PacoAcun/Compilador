@@ -68,6 +68,9 @@ ejecutar-ir:
 generar-dot:
 	dot -Tpdf output.dot -o output.pdf
 
+generar-dot-IR:
+	dot -Tpdf output.ir.dot -o output.ir.pdf
+
 # Objetivos de debug
 debug-ir: compilar-ir
 	java -cp bin:compiler/lib/java-cup-11b.jar:. compiler.Compiler -target ir input.txt -o output.ir -debug

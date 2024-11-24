@@ -14,6 +14,11 @@ public class CJUMP extends IRStmt {
     }
 
     @Override
+    public void accept(IRTVisitor visitor, String prefix) {
+        visitor.visit(this, prefix);
+    }
+
+    @Override
     public String toString() {
         return "CJUMP(" + relop.toString() + ", " + left.toString() + ", " + right.toString() +
                ", " + trueLabel + ", " + falseLabel + ")";

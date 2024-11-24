@@ -10,6 +10,11 @@ public class SEQ extends IRStmt {
     }
 
     @Override
+    public void accept(IRTVisitor visitor, String prefix) {
+        visitor.visit(this, prefix);
+    }
+
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         for (IRStmt stmt : stmts) {

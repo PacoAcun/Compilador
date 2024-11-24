@@ -1,0 +1,411 @@
+stage: parsing
+Parsing completed successfully.
+AST:
+Program: Program
+  VarDecl: x Type: int
+  VarDecl: y Type: int
+  VarDecl: flag Type: boolean
+  VarDecl: numbers Type: int[][]
+  VarDecl: flags Type: boolean[][]
+  MethodDecl: main ReturnType: void
+    Parameters:
+    Body:
+    Block:
+      VarDecls:
+      Statements:
+        AssignStmt:
+          Location:
+            VarLocation: x
+          Operator: =
+          Expression:
+            IntLiteral: 10
+        AssignStmt:
+          Location:
+            VarLocation: y
+          Operator: =
+          Expression:
+            IntLiteral: 20
+        AssignStmt:
+          Location:
+            VarLocation: flag
+          Operator: =
+          Expression:
+            BoolLiteral: true
+        AssignStmt:
+          Location:
+            VarLocation: numbers
+          Operator: =
+          Expression:
+            NewArrayExpr:
+              Type:
+                ArrayType: int[]
+              Size:
+                IntLiteral: 5
+        AssignStmt:
+          Location:
+            VarLocation: flags
+          Operator: =
+          Expression:
+            NewArrayExpr:
+              Type:
+                ArrayType: boolean[]
+              Size:
+                IntLiteral: 3
+        AssignStmt:
+          Location:
+            VarLocation: x
+          Operator: =
+          Expression:
+            BinaryExpr: +
+              Left:
+                VarLocation: y
+              Right:
+                IntLiteral: 1
+        AssignStmt:
+          Location:
+            VarLocation: y
+          Operator: =
+          Expression:
+            BinaryExpr: *
+              Left:
+                VarLocation: x
+              Right:
+                IntLiteral: 2
+        AssignStmt:
+          Location:
+            VarLocation: flag
+          Operator: =
+          Expression:
+            BinaryExpr: &&
+              Left:
+                BoolLiteral: true
+              Right:
+                BoolLiteral: false
+        AssignStmt:
+          Location:
+            VarLocation: flag
+          Operator: =
+          Expression:
+            UnaryExpr: !
+              VarLocation: flag
+        AssignStmt:
+          Location:
+            ArrayLocation: numbers
+              Index:
+                IntLiteral: 0
+          Operator: =
+          Expression:
+            IntLiteral: 1
+        AssignStmt:
+          Location:
+            ArrayLocation: numbers
+              Index:
+                BinaryExpr: -
+                  Left:
+                    VarLocation: x
+                  Right:
+                    IntLiteral: 10
+          Operator: =
+          Expression:
+            IntLiteral: 2
+        AssignStmt:
+          Location:
+            ArrayLocation: flags
+              Index:
+                IntLiteral: 0
+          Operator: =
+          Expression:
+            BoolLiteral: true
+        IfStmt:
+          Condition:
+            VarLocation: flag
+          Then Block:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: x
+                  Operator: =
+                  Expression:
+                    IntLiteral: 1
+        IfStmt:
+          Condition:
+            BinaryExpr: ==
+              Left:
+                VarLocation: x
+              Right:
+                VarLocation: y
+          Then Block:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: flag
+                  Operator: =
+                  Expression:
+                    BoolLiteral: false
+        IfStmt:
+          Condition:
+            BinaryExpr: &&
+              Left:
+                ArrayLocation: flags
+                  Index:
+                    IntLiteral: 0
+              Right:
+                VarLocation: flag
+          Then Block:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: y
+                  Operator: =
+                  Expression:
+                    IntLiteral: 2
+        ForStmt:
+          Initialization:
+            VarDeclStmt:
+              VarDecl: i Type: int
+              InitExpression:
+                IntLiteral: 0
+          Condition:
+            BinaryExpr: <
+              Left:
+                VarLocation: i
+              Right:
+                IntLiteral: 5
+          Update:
+            ExprStmt:
+              AssignExpr:
+                Location:
+                  VarLocation: i
+                Operator: =
+                Expression:
+                  BinaryExpr: +
+                    Left:
+                      VarLocation: i
+                    Right:
+                      IntLiteral: 1
+          Body:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    ArrayLocation: numbers
+                      Index:
+                        VarLocation: i
+                  Operator: =
+                  Expression:
+                    BinaryExpr: *
+                      Left:
+                        VarLocation: i
+                      Right:
+                        IntLiteral: 2
+                IfStmt:
+                  Condition:
+                    BinaryExpr: ==
+                      Left:
+                        VarLocation: i
+                      Right:
+                        IntLiteral: 3
+                  Then Block:
+                    Block:
+                      VarDecls:
+                      Statements:
+                        BreakStmt
+                IfStmt:
+                  Condition:
+                    BinaryExpr: <
+                      Left:
+                        VarLocation: i
+                      Right:
+                        IntLiteral: 2
+                  Then Block:
+                    Block:
+                      VarDecls:
+                      Statements:
+                        ContinueStmt
+                AssignStmt:
+                  Location:
+                    ArrayLocation: flags
+                      Index:
+                        IntLiteral: 0
+                  Operator: =
+                  Expression:
+                    BoolLiteral: true
+        MethodCallStmt:
+          MethodCall: calculateSum
+            Arguments:
+              IntLiteral: 10
+        MethodCallStmt:
+          MethodCall: performOperations
+            Arguments:
+              VarLocation: x
+              VarLocation: flag
+        AssignStmt:
+          Location:
+            VarLocation: flag
+          Operator: =
+          Expression:
+            MethodCall: checkCondition
+              Arguments:
+                VarLocation: x
+                VarLocation: y
+        ReturnStmt:
+          void
+  MethodDecl: calculateSum ReturnType: int
+    Parameters:
+      Param: limit Type: int
+    Body:
+    Block:
+      VarDecls:
+        VarDecl: sum Type: int
+      Statements:
+        AssignStmt:
+          Location:
+            VarLocation: sum
+          Operator: =
+          Expression:
+            IntLiteral: 0
+        ForStmt:
+          Initialization:
+            VarDeclStmt:
+              VarDecl: i Type: int
+              InitExpression:
+                IntLiteral: 0
+          Condition:
+            BinaryExpr: <
+              Left:
+                VarLocation: i
+              Right:
+                VarLocation: limit
+          Update:
+            ExprStmt:
+              AssignExpr:
+                Location:
+                  VarLocation: i
+                Operator: =
+                Expression:
+                  BinaryExpr: +
+                    Left:
+                      VarLocation: i
+                    Right:
+                      IntLiteral: 1
+          Body:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: sum
+                  Operator: =
+                  Expression:
+                    BinaryExpr: +
+                      Left:
+                        VarLocation: sum
+                      Right:
+                        VarLocation: i
+        ReturnStmt:
+          VarLocation: sum
+  MethodDecl: performOperations ReturnType: void
+    Parameters:
+      Param: value Type: int
+      Param: condition Type: boolean
+    Body:
+    Block:
+      VarDecls:
+      Statements:
+        IfStmt:
+          Condition:
+            VarLocation: condition
+          Then Block:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: value
+                  Operator: =
+                  Expression:
+                    BinaryExpr: *
+                      Left:
+                        VarLocation: value
+                      Right:
+                        IntLiteral: 2
+        ReturnStmt:
+          void
+  MethodDecl: checkCondition ReturnType: boolean
+    Parameters:
+      Param: a Type: int
+      Param: b Type: int
+    Body:
+    Block:
+      VarDecls:
+        VarDecl: result Type: boolean
+      Statements:
+        IfStmt:
+          Condition:
+            BinaryExpr: >
+              Left:
+                VarLocation: a
+              Right:
+                VarLocation: b
+          Then Block:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: result
+                  Operator: =
+                  Expression:
+                    BoolLiteral: true
+          Else Block:
+            Block:
+              VarDecls:
+              Statements:
+                AssignStmt:
+                  Location:
+                    VarLocation: result
+                  Operator: =
+                  Expression:
+                    BoolLiteral: false
+        ReturnStmt:
+          VarLocation: result
+  MethodDecl: factorial ReturnType: int
+    Parameters:
+      Param: n Type: int
+    Body:
+    Block:
+      VarDecls:
+      Statements:
+        IfStmt:
+          Condition:
+            BinaryExpr: <=
+              Left:
+                VarLocation: n
+              Right:
+                IntLiteral: 1
+          Then Block:
+            Block:
+              VarDecls:
+              Statements:
+                ReturnStmt:
+                  IntLiteral: 1
+        ReturnStmt:
+          BinaryExpr: *
+            Left:
+              VarLocation: n
+            Right:
+              MethodCall: factorial
+                Arguments:
+                  BinaryExpr: -
+                    Left:
+                      VarLocation: n
+                    Right:
+                      IntLiteral: 1
+

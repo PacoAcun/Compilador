@@ -8,9 +8,7 @@ import compiler.ast.ASTPrinter;
 import compiler.ast.ASTDotGenerator;
 import compiler.semantic.SemanticAnalyzer; 
 import java_cup.runtime.Symbol;
-import compiler.irt.IRTreeGenerator;
-import compiler.irt.BasicBlock;
-import compiler.irt.IRResult;
+import compiler.irt.*;
 
 import java.io.File;
 import java.io.BufferedReader;
@@ -457,7 +455,7 @@ public class Compiler {
     }
 
     // Añade el nuevo método runIR:
-    private static void runIR(String filename, String output, boolean debug) throws IOException {
+        private static void runIR(String filename, String output, boolean debug) throws IOException {
         try (PrintWriter writer = new PrintWriter(new FileWriter(output))) {
             // Indicate the start of the IR generation stage
             writer.println("stage: IR generation");
@@ -491,47 +489,54 @@ public class Compiler {
                 return;
             }
 
+
             // Generate IR
             IRTreeGenerator irGenerator = new IRTreeGenerator();
             IRResult irResult = irGenerator.generateAndOptimize(program);
 
             if (irResult.errors.isEmpty()) {
                 // Print the generated IR
-                writer.println("\nGenerated Intermediate Representation:");
                 if (irResult.ir != null) {
                     writer.println(irResult.ir.toString());
                 } else {
                     writer.println("Error: The generated IR is null.");
                 }
 
-                // Show optimizations if any
-                writer.println("\nOptimizations performed:");
-                if (irResult.cfg != null && irResult.cfg.blocks != null) {
-                    writer.println("- Número de bloques básicos: " + irResult.cfg.blocks.size());
-                } else {
-                    writer.println("- No se generó el CFG o no tiene bloques básicos.");
-                }
-
-
-                if (debug) {
-                    // Print additional debug information
-                    writer.println("\nDebug Information:");
-                    writer.println("- Basic blocks and their connections");
-                    if (irResult.cfg != null) {
-                        for (BasicBlock block : irResult.cfg.blocks) {
-                            writer.println("  Block: " + block.label);
-                            writer.println("  Predecessors: " + block.predecessors.size());
-                            writer.println("  Successors: " + block.successors.size());
-                            writer.println();
-                        }
-                    }
-                }
             } else {
                 writer.println("Errors during IR generation:");
                 for (String error : irResult.errors) {
                     writer.println(error);
                 }
             }
+
+            // Print the tree structure using IRTPrinter
+                IRTPrinter printer = new IRTPrinter();
+                irResult.ir.accept(printer, ""); 
+
+            String dotFile = output.replaceAll("\\.txt$", "") + ".dot";
+            try (PrintWriter dotWriter = new PrintWriter(new FileWriter(dotFile))) {
+                IRDotGenerator dotGenerator = new IRDotGenerator(dotWriter);
+                dotGenerator.beginGraph();
+                irResult.ir.accept(dotGenerator, "");
+                dotGenerator.endGraph();
+                System.out.println("Archivo DOT generado: " + dotFile);
+            }
+
+            String pdfFile = dotFile.replaceAll("\\.dot$", "") + ".pdf";
+            try {
+                ProcessBuilder pb = new ProcessBuilder("dot", "-Tpdf", dotFile, "-o", pdfFile);
+                pb.redirectErrorStream(true);
+                Process process = pb.start();
+                int exitCode = process.waitFor();
+                if (exitCode == 0) {
+                    System.out.println("PDF generado exitosamente en: " + pdfFile);
+                } else {
+                    System.err.println("Error generando PDF. Código de salida: " + exitCode);
+                }
+            } catch (IOException | InterruptedException e) {
+                System.err.println("Error al convertir DOT a PDF: " + e.getMessage());
+            }
+
 
         } catch (Exception e) {
             System.err.println("Error during IR generation: " + e.getMessage());
@@ -540,6 +545,7 @@ public class Compiler {
             }
         }
     }
+
 
     /**
      * Método para imprimir la ayuda y uso del compilador.
