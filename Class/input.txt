@@ -1,102 +1,94 @@
 class Program {
     /* Variables globales */
     int x;
-    int y;
+    int x;                  /* Error: Identificador duplicado */
     boolean flag;
     int numbers[];
     boolean flags[];
+    int invalidArray[];
     
     void main() {
-        /* Inicialización de variables */
-        x = 10;
-        y = 20;
-        flag = true;
+        /* Error: Variables usadas antes de declaración */
+        undeclaredVar = 10;
+        z = y + 1;
+
+        /* Error: Arrays con tamaño inválido */
+        numbers = new int[-5];
+        invalidArray = new int[0];
+
+        /* Error: Operaciones con tipos incorrectos */
+        flag = flag + 1;           /* Error: operador aritmético con boolean */
+        x = true + false;          /* Error: operador aritmético con boolean */
+        flag = 42 && true;         /* Error: operador lógico con int */
+        flag = false || 5;         /* Error: operador lógico con int */
         
-        /* Arrays */
-        numbers = new int[5];
-        flags = new boolean[3];
+        /* Error: Comparaciones de tipos incompatibles */
+        flag = (x == flag);        /* Error: comparación int con boolean */
+        flag = (numbers == flags); /* Error: comparación de arrays de diferentes tipos */
         
-        /* Operaciones aritméticas correctas */
-        x = y + 1;
-        y = x * 2;
+        /* Error: Asignaciones de tipos incompatibles */
+        x = flag;                  /* Error: asignación de boolean a int */
+        flag = 42;                 /* Error: asignación de int a boolean */
+        numbers = flags;           /* Error: asignación entre arrays de diferentes tipos */
         
-        /* Operaciones lógicas correctas */
-        flag = true && false;
-        flag = !flag;
+        /* Error: Operaciones inválidas con arrays */
+        x[0] = 5;                  /* Error: x no es array */
+        numbers[true] = 1;         /* Error: índice no es int */
+        numbers[flag] = 2;         /* Error: índice no es int */
+        x = numbers + 1;           /* Error: operación aritmética con array */
         
-        /* Operaciones de arrays */
-        numbers[0] = 1;
-        numbers[x - 10] = 2;
-        flags[0] = true;
-        
-        /* Condiciones correctas */
-        if (flag) {
+        /* Error: Condiciones no booleanas */
+        if (42) {                  /* Error: condición debe ser boolean */
             x = 1;
         }
         
-        if (x == y) {
-            flag = false;
+        if (numbers) {             /* Error: condición debe ser boolean */
+            x = 2;
         }
         
-        if (flags[0] && flag) {
-            y = 2;
-        }
+        /* Error: Operaciones inválidas */
+        flag += 1;                 /* Error: incremento en boolean */
+        numbers += 1;              /* Error: incremento en array */
         
-        /* Loops correctos */
-        for (int i = 0; i < 5; i = i + 1) {
-            numbers[i] = i * 2;
-            if (i == 3) {
-                break; // This break statement is correctly inside the loop
+        /* Error: Break/Continue fuera de loop */
+        break;                     /* Error: break fuera de loop */
+        continue;                  /* Error: continue fuera de loop */
+        
+        /* Error: For loop con tipos incorrectos */
+        for (int i = 0; i < 10; i = i + 1) {
+            if (true) {
+                break;             /* Correcto: break dentro de loop */
             }
-            if (i < 2) {
-                continue; // This continue statement is also correctly inside the loop
-            }
-            flags[0] = true;
         }
         
-        /* Llamadas a métodos */
-        calculateSum(10);
-        performOperations(x, flag);
-        flag = checkCondition(x, y);
-        
-        return;  /* Correcto para método void */
+        /* Error: Return en método void */
+        return 42;                 /* Error: return con valor en método void */
     }
-    
-    int calculateSum(int limit) {
-        int sum;
-        sum = 0;
-        
-        for (int i = 0; i < limit; i = i + 1) {
-            sum = sum + i;
-        }
-        
-        return sum;  /* Retorno correcto de int */
+
+    int testMethod(int p1, boolean p2) {
+        return true;               /* Error: tipo de retorno incorrecto */
     }
-    
-    void performOperations(int value, boolean condition) {
-        if (condition) {
-            value = value * 2;
-        }
-        
-        return;  /* Retorno correcto para void */
+
+    void voidTest() {
+        return 5;                  /* Error: return con valor en método void */
     }
-    
-    boolean checkCondition(int a, int b) {
-        boolean result;
-        
-        if (a > b) {
-            result = true;
-        } else {
-            result = false;
-        }
-        
-        return result;  /* Retorno correcto de boolean */
+
+    boolean wrongReturnType() {
+        return 42;                 /* Error: tipo de retorno incorrecto */
     }
-    
-    int factorial(int n) {
-        if (n <= 1) {
-            return 1;
+
+    int missingReturn(int x) {
+        if (x > 0) {
+            return x;
         }
-        return n * factorial(n - 1);  /* Llamada recursiva correcta */
+        /* Error: no todas las rutas retornan valor */
+    }
+
+    void methodCallErrors() {
+        testMethod();              /* Error: faltan argumentos */
+        testMethod(1, false, 42);  /* Error: demasiados argumentos */
+        testMethod(true, 42);      /* Error: tipos de argumentos incorrectos */
+        undefinedMethod();         /* Error: método no declarado */
+        x = voidTest();            /* Error: método void usado como expresión */
     }
 }

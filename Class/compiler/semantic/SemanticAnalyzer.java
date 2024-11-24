@@ -13,6 +13,8 @@ public class SemanticAnalyzer implements ASTVisitor {
     private boolean hasReturnStatement;
     private String currentMethodName;
     private int loopDepth;
+    private Set<String> reportedUndeclaredVars;
+    private Map<String, Set<String>> errorsByVariable;
 
     public SemanticAnalyzer() {
         symbolTable = new SymbolTable();
@@ -24,6 +26,8 @@ public class SemanticAnalyzer implements ASTVisitor {
         hasReturnStatement = false;
         currentMethodName = "";
         loopDepth = 0;
+        reportedUndeclaredVars = new HashSet<>();
+        errorsByVariable = new HashMap<>();
     }
 
     public List<String> getErrors() {
@@ -31,11 +35,35 @@ public class SemanticAnalyzer implements ASTVisitor {
     }
 
     private void reportError(String message) {
-        errors.add(message);
+        if (!errors.contains(message)) {
+            errors.add(message);
+        }
     }
 
-    private void reportError(String message, int line) {
-        errors.add(String.format("Error en línea %d: %s", line, message));
+    private void reportVariableError(String varName, String errorType) {
+        if (errorType.equals("undeclared") && reportedUndeclaredVars.contains(varName)) {
+            return;
+        }
+
+        String message = "";
+        switch (errorType) {
+            case "undeclared":
+                message = "La variable '" + varName + "' no está declarada.";
+                reportedUndeclaredVars.add(varName);
+                break;
+            case "not_array":
+                message = "La variable '" + varName + "' no es un arreglo.";
+                break;
+            case "array_not_declared":
+                message = "El arreglo '" + varName + "' no está declarado o no es un arreglo.";
+                break;
+        }
+
+        errorsByVariable.computeIfAbsent(varName, k -> new HashSet<>()).add(message);
+        
+        if (!errors.contains(message)) {
+            errors.add(message);
+        }
     }
 
     private void checkMainMethodExists(Program program) {
@@ -64,8 +92,6 @@ public class SemanticAnalyzer implements ASTVisitor {
 
     @Override
     public void visit(Program program) {
-        System.out.println("Declarando variables globales...");
-        
         // Primera pasada: declarar variables globales
         for (ClassBodyMember member : program.classBody) {
             if (member instanceof VarDecl || member instanceof MultiVarDecl) {
@@ -73,11 +99,7 @@ public class SemanticAnalyzer implements ASTVisitor {
             }
         }
 
-        System.out.println("Contenido de la tabla de símbolos después de declarar variables globales:");
-        symbolTable.printAllScopes();
-
         // Segunda pasada: declarar métodos
-        System.out.println("Declarando métodos...");
         for (ClassBodyMember member : program.classBody) {
             if (member instanceof MethodDecl) {
                 MethodDecl methodDecl = (MethodDecl) member;
@@ -85,11 +107,9 @@ public class SemanticAnalyzer implements ASTVisitor {
             }
         }
 
-        // Verificar existencia del método main
         checkMainMethodExists(program);
 
         // Tercera pasada: analizar cuerpos de métodos
-        System.out.println("Analizando métodos...");
         for (ClassBodyMember member : program.classBody) {
             if (member instanceof MethodDecl) {
                 member.accept(this);
@@ -116,14 +136,10 @@ public class SemanticAnalyzer implements ASTVisitor {
         Type type = varDecl.type;
         String name = varDecl.name;
 
-        System.out.println("visit(VarDecl): Declarando variable '" + name + "' de tipo '" + type + "'.");
-
         Symbol symbol = new Symbol(name, type, Symbol.SymbolType.VARIABLE);
 
         if (!symbolTable.declare(symbol)) {
             reportError("Identificador '" + name + "' ya está declarado en este scope.");
-        } else {
-            System.out.println("Variable '" + name + "' declarada en el scope actual.");
         }
 
         if (varDecl.initExpr != null) {
@@ -136,7 +152,6 @@ public class SemanticAnalyzer implements ASTVisitor {
             }
         }
         
-        // Si es un array, verificar que el tamaño sea positivo
         if (type instanceof ArrayType && varDecl.initExpr instanceof NewArrayExpr) {
             NewArrayExpr arrayExpr = (NewArrayExpr) varDecl.initExpr;
             if (arrayExpr.getSize() instanceof IntLiteral) {
@@ -156,9 +171,7 @@ public class SemanticAnalyzer implements ASTVisitor {
         hasReturnStatement = false;
 
         symbolTable.enterScope();
-        System.out.println("Entrando al scope del método '" + methodName + "'.");
 
-        // Insertar parámetros
         for (Param param : methodDecl.params) {
             Symbol paramSymbol = new Symbol(param.name, param.type, Symbol.SymbolType.VARIABLE);
             if (!symbolTable.declare(paramSymbol)) {
@@ -174,10 +187,8 @@ public class SemanticAnalyzer implements ASTVisitor {
             inMainMethod = true;
         }
 
-        // Visitar el cuerpo
         methodDecl.body.accept(this);
 
-        // Verificar que los métodos no void tengan return en todos los caminos
         if (!(returnType instanceof VoidType) && !hasReturnStatement) {
             reportError("El método '" + methodName + "' debe retornar un valor en todos los caminos de ejecución.");
         }
@@ -187,13 +198,11 @@ public class SemanticAnalyzer implements ASTVisitor {
         currentMethodName = "";
 
         symbolTable.exitScope();
-        System.out.println("Saliendo del scope del método '" + methodName + "'.");
     }
 
     @Override
     public void visit(Block block) {
         symbolTable.enterScope();
-        System.out.println("Entrando a un nuevo scope de bloque.");
 
         for (VarDecl varDecl : block.varDecls) {
             varDecl.accept(this);
@@ -204,35 +213,32 @@ public class SemanticAnalyzer implements ASTVisitor {
         }
 
         symbolTable.exitScope();
-        System.out.println("Saliendo del scope de bloque.");
     }
 
     @Override
     public void visit(FieldDecl fieldDecl) {
-    Type type = fieldDecl.type;
-    String name = fieldDecl.name;
+        Type type = fieldDecl.type;
+        String name = fieldDecl.name;
 
-    Symbol symbol = new Symbol(name, type, Symbol.SymbolType.VARIABLE);
+        Symbol symbol = new Symbol(name, type, Symbol.SymbolType.VARIABLE);
 
-    if (!symbolTable.declare(symbol)) {
-        reportError("El campo '" + name + "' ya está declarado en este scope.");
-    }
+        if (!symbolTable.declare(symbol)) {
+            reportError("El campo '" + name + "' ya está declarado en este scope.");
+        }
 
-    // Si el campo tiene una expresión de inicialización
-    if (fieldDecl.initExpr != null) {
-        fieldDecl.initExpr.accept(this);
-        Type initType = getExpressionType(fieldDecl.initExpr);
-        if (initType != null && !typesAreCompatible(type, initType)) {
-            reportError("Tipo de la expresión de inicialización para '" + name + 
-                      "' no coincide con el tipo declarado. Se esperaba " + type + 
-                      " pero se encontró " + initType + ".");
+        if (fieldDecl.initExpr != null) {
+            fieldDecl.initExpr.accept(this);
+            Type initType = getExpressionType(fieldDecl.initExpr);
+            if (initType != null && !typesAreCompatible(type, initType)) {
+                reportError("Tipo de la expresión de inicialización para '" + name + 
+                          "' no coincide con el tipo declarado. Se esperaba " + type + 
+                          " pero se encontró " + initType + ".");
+            }
         }
     }
-}
+
     @Override
     public void visit(ClassDecl classDecl) {
-        // Si necesitas manejar múltiples clases, ajusta esta lógica según tus necesidades.
-        // En muchos casos, puedes simplemente recorrer los miembros de la clase.
         for (ClassBodyMember member : classDecl.body) {
             member.accept(this);
         }
@@ -247,7 +253,6 @@ public class SemanticAnalyzer implements ASTVisitor {
         Type exprType = getExpressionType(assignStmt.expr);
         String op = assignStmt.op;
 
-        // Verificar si la location es válida
         if (assignStmt.location instanceof ArrayLocation) {
             checkArrayAccess((ArrayLocation) assignStmt.location);
         }
@@ -271,12 +276,12 @@ public class SemanticAnalyzer implements ASTVisitor {
     private void checkArrayAccess(ArrayLocation arrayLoc) {
         Symbol symbol = symbolTable.lookup(arrayLoc.name);
         if (symbol == null) {
-            reportError("El arreglo '" + arrayLoc.name + "' no está declarado.");
+            reportVariableError(arrayLoc.name, "array_not_declared");
             return;
         }
         
         if (!(symbol.getType() instanceof ArrayType)) {
-            reportError("La variable '" + arrayLoc.name + "' no es un arreglo.");
+            reportVariableError(arrayLoc.name, "not_array");
             return;
         }
 
@@ -285,7 +290,6 @@ public class SemanticAnalyzer implements ASTVisitor {
             reportError("El índice del arreglo debe ser de tipo int.");
         }
 
-        // Si el índice es un literal, verificar que no sea negativo
         if (arrayLoc.index instanceof IntLiteral) {
             int index = ((IntLiteral) arrayLoc.index).getValue();
             if (index < 0) {
@@ -305,12 +309,10 @@ public class SemanticAnalyzer implements ASTVisitor {
 
         boolean previousHasReturn = hasReturnStatement;
         
-        // Analizar bloque then
         hasReturnStatement = false;
         ifStmt.getThenBlock().accept(this);
         boolean thenHasReturn = hasReturnStatement;
 
-        // Analizar bloque else si existe
         boolean elseHasReturn = false;
         if (ifStmt.getElseBlock() != null) {
             hasReturnStatement = false;
@@ -318,39 +320,30 @@ public class SemanticAnalyzer implements ASTVisitor {
             elseHasReturn = hasReturnStatement;
         }
 
-        // Un if-else cuenta como retorno si ambas ramas retornan
         hasReturnStatement = (thenHasReturn && elseHasReturn) || previousHasReturn;
     }
 
     @Override
     public void visit(ForStmt forStmt) {
-        // Verificar inicialización
         Statement init = forStmt.getInit();
         init.accept(this);
         
-        // Verificar condición
         forStmt.getCondition().accept(this);
         Type condType = getExpressionType(forStmt.getCondition());
         if (!(condType instanceof BooleanType)) {
             reportError("La condición del for debe ser de tipo boolean");
         }
 
-        // Verificar actualización
         forStmt.getUpdate().accept(this);
         
-        // Incrementar el contador de loops anidados
-        loopDepth++;  // Añade esta variable como campo de clase
-        
-        // Entrar en el loop
+        loopDepth++;
         boolean previousInLoop = inLoop;
         inLoop = true;
         
-        // Visitar el cuerpo
         forStmt.getBody().accept(this);
         
-        // Restaurar estado previo
         inLoop = previousInLoop;
-        loopDepth--;  // Decrementar al salir
+        loopDepth--;
     }
    
     @Override
@@ -408,7 +401,6 @@ public class SemanticAnalyzer implements ASTVisitor {
             reportError("La sentencia 'break' debe estar dentro de un ciclo.");
         }
     }
-    
 
     @Override
     public void visit(ContinueStmt continueStmt) {
@@ -426,13 +418,11 @@ public class SemanticAnalyzer implements ASTVisitor {
         Type rightType = getExpressionType(binaryExpr.right);
         String op = binaryExpr.op;
 
-        // Verificar que ningún operando sea void
         if (leftType instanceof VoidType || rightType instanceof VoidType) {
             reportError("No se puede utilizar una expresión de tipo void en una operación binaria.");
             return;
         }
 
-        // Verificar operaciones según el tipo de operador
         if (isArithmeticOp(op)) {
             checkArithmeticOperation(leftType, rightType, op);
         } else if (isRelationalOp(op)) {
@@ -492,7 +482,6 @@ public class SemanticAnalyzer implements ASTVisitor {
 
     @Override
     public void visit(MethodCall methodCall) {
-        // Verificar recursión infinita
         if (!currentCallStack.add(methodCall.getMethodName())) {
             reportError("Posible recursión infinita detectada en el método '" + methodCall.getMethodName() + "'.");
             currentCallStack.remove(methodCall.getMethodName());
@@ -509,7 +498,6 @@ public class SemanticAnalyzer implements ASTVisitor {
         List<Expression> args = methodCall.getArguments();
         List<Type> paramTypes = methodSymbol.getParameterTypes();
 
-        // Verificar número de argumentos
         if (args.size() != paramTypes.size()) {
             reportError("El método '" + methodCall.getMethodName() + "' espera " + 
                       paramTypes.size() + " argumentos, pero se proporcionaron " + args.size() + ".");
@@ -517,7 +505,6 @@ public class SemanticAnalyzer implements ASTVisitor {
             return;
         }
 
-        // Verificar tipos de argumentos
         for (int i = 0; i < args.size(); i++) {
             Expression arg = args.get(i);
             arg.accept(this);
@@ -563,10 +550,7 @@ public class SemanticAnalyzer implements ASTVisitor {
     public void visit(VarLocation varLocation) {
         Symbol symbol = symbolTable.lookup(varLocation.name);
         if (symbol == null || symbol.getSymbolType() != Symbol.SymbolType.VARIABLE) {
-            reportError("La variable '" + varLocation.name + "' no está declarada.");
-        } else {
-            System.out.println("Variable '" + varLocation.name + "' encontrada con tipo '" + 
-                             symbol.getType() + "'.");
+            reportVariableError(varLocation.name, "undeclared");
         }
     }
 
@@ -574,12 +558,12 @@ public class SemanticAnalyzer implements ASTVisitor {
     public void visit(ArrayLocation arrayLocation) {
         Symbol symbol = symbolTable.lookup(arrayLocation.name);
         if (symbol == null || symbol.getSymbolType() != Symbol.SymbolType.VARIABLE) {
-            reportError("El arreglo '" + arrayLocation.name + "' no está declarado.");
+            reportVariableError(arrayLocation.name, "array_not_declared");
             return;
         }
 
         if (!(symbol.getType() instanceof ArrayType)) {
-            reportError("La variable '" + arrayLocation.name + "' no es un arreglo.");
+            reportVariableError(arrayLocation.name, "not_array");
             return;
         }
 
@@ -612,7 +596,6 @@ public class SemanticAnalyzer implements ASTVisitor {
             return false;
         }
 
-        // Manejo especial para arrays
         if (expected instanceof ArrayType && actual instanceof ArrayType) {
             return typesAreCompatible(
                 ((ArrayType) expected).getElementType(),
@@ -620,7 +603,6 @@ public class SemanticAnalyzer implements ASTVisitor {
             );
         }
 
-        // Comparación de tipos básicos
         return expected.getClass().equals(actual.getClass());
     }
 
@@ -638,7 +620,7 @@ public class SemanticAnalyzer implements ASTVisitor {
             if (symbol != null) {
                 return symbol.getType();
             } else {
-                reportError("La variable '" + ((VarLocation) expr).name + "' no está declarada.");
+                reportVariableError(((VarLocation) expr).name, "undeclared");
                 return null;
             }
         } else if (expr instanceof ArrayLocation) {
@@ -646,8 +628,7 @@ public class SemanticAnalyzer implements ASTVisitor {
             if (symbol != null && symbol.getType() instanceof ArrayType) {
                 return ((ArrayType) symbol.getType()).getElementType();
             } else {
-                reportError("El arreglo '" + ((ArrayLocation) expr).name + 
-                          "' no está declarado o no es un arreglo.");
+                reportVariableError(((ArrayLocation) expr).name, "array_not_declared");
                 return null;
             }
         } else if (expr instanceof BinaryExpr) {
@@ -703,78 +684,51 @@ public class SemanticAnalyzer implements ASTVisitor {
         return null;
     }
 
-    // Métodos de visita restantes (tipos básicos y literales)
+    // Métodos de visita para tipos básicos y literales
     @Override
-    public void visit(IntType intType) {
-        // No requiere acción
-    }
+    public void visit(IntType intType) {}
 
     @Override
-    public void visit(BooleanType booleanType) {
-        // No requiere acción
-    }
+    public void visit(BooleanType booleanType) {}
 
     @Override
-    public void visit(CharType charType) {
-        // No requiere acción
-    }
+    public void visit(CharType charType) {}
 
     @Override
-    public void visit(VoidType voidType) {
-        // No requiere acción
-    }
+    public void visit(VoidType voidType) {}
 
     @Override
-    public void visit(ArrayType arrayType) {
-        // No requiere acción
-    }
+    public void visit(ArrayType arrayType) {}
 
     @Override
-    public void visit(StringType stringType) {
-        // No requiere acción
-    }
+    public void visit(StringType stringType) {}
 
     @Override
-    public void visit(NullType nullType) {
-        // No requiere acción
-    }
+    public void visit(NullType nullType) {}
 
     @Override
-    public void visit(IntLiteral intLiteral) {
-        // No requiere acción
-    }
+    public void visit(IntLiteral intLiteral) {}
 
     @Override
-    public void visit(BoolLiteral boolLiteral) {
-        // No requiere acción
-    }
+    public void visit(BoolLiteral boolLiteral) {}
 
     @Override
-    public void visit(CharLiteral charLiteral) {
-        // No requiere acción
-    }
+    public void visit(CharLiteral charLiteral) {}
 
     @Override
-    public void visit(StringLiteral stringLiteral) {
-        // No requiere acción
-    }
+    public void visit(StringLiteral stringLiteral) {}
 
     @Override
     public void visit(MultiVarDecl multiVarDecl) {
-        System.out.println("visit(MultiVarDecl): Procesando declaraciones múltiples de variables.");
         for (ClassBodyMember decl : multiVarDecl.getDeclarations()) {
             if (decl instanceof VarDecl) {
                 decl.accept(this);
-            } else {
-                System.out.println("Advertencia: Encontrado ClassBodyMember que no es VarDecl en MultiVarDecl.");
             }
         }
     }
 
     @Override
-    public void visit(Param param) {
-        // Parámetros son manejados en la visita del método
-    }
+    public void visit(Param param) {}
 
     @Override
     public void visit(MethodCallStmt methodCallStmt) {
@@ -787,9 +741,7 @@ public class SemanticAnalyzer implements ASTVisitor {
     }
 
     @Override
-    public void visit(StringArg stringArg) {
-        // No requiere acción específica
-    }
+    public void visit(StringArg stringArg) {}
 
     @Override
     public void visit(ExprArg exprArg) {
@@ -812,8 +764,6 @@ public class SemanticAnalyzer implements ASTVisitor {
     @Override
     public void visit(CalloutStmt calloutStmt) {
         CalloutCall call = calloutStmt.getCalloutCall();
-        // En Decaf, los callouts no requieren declaración previa
-        // Visitar los argumentos
         for (CalloutArg arg : call.getArgs()) {
             arg.accept(this);
         }
